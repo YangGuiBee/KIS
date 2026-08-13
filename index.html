@@ -1,0 +1,116 @@
+<!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>지식정보사이트(KIS)</title><style>
+:root{--ink:#1f2937;--mut:#6b7280;--line:#e5e7eb;--blue:#2563eb;--bg:#f8fafc}
+*{box-sizing:border-box}body{margin:0;font-family:'Malgun Gothic','맑은 고딕',sans-serif;color:var(--ink);background:var(--bg)}
+header{background:linear-gradient(135deg,#0f766e,#0891b2);color:#fff;padding:24px 30px}
+header h1{margin:0;font-size:22px}header .s{opacity:.9;font-size:13px;margin-top:5px}
+.wrap{max-width:1000px;margin:0 auto;padding:20px 30px 60px}
+.bar{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin:6px 0 14px}
+#q{flex:1;min-width:220px;padding:10px 12px;border:1px solid var(--line);border-radius:8px;font-size:14px}
+.chips{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px}
+.chip{padding:5px 11px;border:1px solid var(--line);border-radius:999px;font-size:12px;cursor:pointer;background:#fff}
+.chip.on{background:var(--blue);color:#fff;border-color:var(--blue)}
+.card{background:#fff;border:1px solid var(--line);border-radius:12px;margin-bottom:12px;overflow:hidden}
+.chd{display:flex;justify-content:space-between;gap:12px;padding:14px 16px;cursor:pointer}
+.ct{font-weight:800;font-size:15px}.cs{color:var(--mut);font-size:13px;margin-top:4px;line-height:1.5}
+.tags{margin-top:8px}.tag{display:inline-block;background:#ecfeff;color:#0e7490;border:1px solid #cffafe;border-radius:6px;padding:1px 7px;font-size:11px;margin:2px 4px 0 0}
+.meta{text-align:right;white-space:nowrap;font-size:12px;display:flex;flex-direction:column;gap:4px;align-items:flex-end}
+.meta a{color:var(--blue);text-decoration:none;font-weight:700}
+.exp{color:var(--mut)}.card.open .exp{transform:rotate(180deg)}
+.cbody{display:none;padding:0 18px 16px;border-top:1px solid var(--line)}.card.open .cbody{display:block}
+.cbody h4{margin:14px 0 6px;font-size:14px;color:#0e7490}.cbody ul{margin:6px 0;padding-left:20px}.cbody li{font-size:13.5px;line-height:1.7;margin:3px 0}
+.cbody p{font-size:13.5px;line-height:1.7}.ts{background:#f1f5f9;padding:0 5px;border-radius:4px;font-size:12px;color:#334155}
+.wl{background:#eef2ff;color:#4338ca;border-radius:4px;padding:0 5px;font-size:12px}
+.muted{color:var(--mut)}.src{margin-top:12px;font-size:12px;word-break:break-all}.src a{color:var(--blue);font-weight:700;text-decoration:none}
+.gal{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px;margin:8px 0 4px}
+.gal img{width:100%;height:100px;object-fit:cover;border:1px solid var(--line);border-radius:6px;cursor:pointer;transition:.15s}.gal img:hover{transform:scale(1.03);box-shadow:0 2px 8px rgba(0,0,0,.15)}
+.count{color:var(--mut);font-size:13px}
+</style></head><body>
+<header><h1>📚 지식정보사이트(KIS)</h1></header>
+<div class="wrap">
+  <div class="bar"><input id="q" placeholder="🔍 제목·요약·태그 검색"><span class="count" id="cnt"></span></div>
+  <div class="chips" id="chips"><span class="chip" data-tag="AI거버넌스">AI거버넌스</span><span class="chip" data-tag="AI에이전트">AI에이전트</span><span class="chip" data-tag="AI인프라">AI인프라</span><span class="chip" data-tag="AX">AX</span><span class="chip" data-tag="가드레일">가드레일</span><span class="chip" data-tag="데이터파이프라인">데이터파이프라인</span><span class="chip" data-tag="멀티에이전트">멀티에이전트</span><span class="chip" data-tag="에이전트리더십">에이전트리더십</span><span class="chip" data-tag="연구자동화">연구자동화</span><span class="chip" data-tag="컴퍼니브레인">컴퍼니브레인</span><span class="chip" data-tag="폐쇄망SLM">폐쇄망SLM</span><span class="chip" data-tag="하네스엔지니어링">하네스엔지니어링</span></div>
+  <div id="list"><article class="card" data-tags="AI에이전트|하네스엔지니어링|멀티에이전트|컴퍼니브레인|에이전트리더십|AX|가드레일" data-text="80개 에이전트와 일하는 법 — 하네스·루프 엔지니어링 &amp; 에이전트 리더십 개인이 80개 에이전트(오케스트레이터+실행50+리뷰5+판단25)와 협업. 조직 ax 성공 = 개인의 ai활용 → 암묵지 자산화(컴퍼니 브레인) + 가드레일·하네스. 진짜 병목은 3번(인사·조직문화). ai에이전트 하네스엔지니어링 멀티에이전트 컴퍼니브레인 에이전트리더십 ax 가드레일">
+    <div class="chd" onclick="this.parentNode.classList.toggle('open')">
+      <div><div class="ct">80개 에이전트와 일하는 법 — 하네스·루프 엔지니어링 &amp; 에이전트 리더십</div><div class="cs">개인이 80개 에이전트(오케스트레이터+실행50+리뷰5+판단25)와 협업. 조직 AX 성공 = 개인의 AI활용 → 암묵지 자산화(컴퍼니 브레인) + 가드레일·하네스. 진짜 병목은 3번(인사·조직문화).</div><div class="tags"><span class="tag" data-tag="AI에이전트">AI에이전트</span><span class="tag" data-tag="하네스엔지니어링">하네스엔지니어링</span><span class="tag" data-tag="멀티에이전트">멀티에이전트</span><span class="tag" data-tag="컴퍼니브레인">컴퍼니브레인</span><span class="tag" data-tag="에이전트리더십">에이전트리더십</span><span class="tag" data-tag="AX">AX</span><span class="tag" data-tag="가드레일">가드레일</span></div></div>
+      <div class="meta"><a href="https://youtu.be/ieCje847TG080" target="_blank">▶ 영상</a><span class="muted">2026-08-13</span><span class="exp">▾</span></div>
+    </div>
+    <div class="cbody"><h4>핵심 키포인트</h4>
+<ul>
+<li><b>80 에이전트 구조</b>: 오케스트레이터(팀장) + 실행 50(‘캐스팅’=팀빌더 스킬) + 리뷰 5(FAB Color: black필자/red비판/blue옹호/silver전문가/gold고객·상사) + 판단 어드바이저 25(철학자·전략가…이순신 포함). 7단계 워크플로우 중 <b>1번(목표)·7번(판단)은 사람 몫</b>.</li>
+<li><b>AI 활용 6레벨(자율주행 차용)</b>: L3 바이브코딩(조건부 자동화) → <b>L4 하네스 엔지니어링</b>(멀티에이전트 오케스트레이션: 롤·평가기준·컨텍스트·도구·순서·<b>가드레일</b>) → <b>L5 루프 엔지니어링</b>(시작·중단 조건, human-in-the-loop).</li>
+<li><b>컴퍼니 브레인</b> = 스킬 라이브러리 + MCP 커넥션 + 날리지 베이스(암묵지 자산화). 개인 AI활용을 조직 AX로 '증류'.</li>
+<li><b>에이전트 리더십 ↔ 피플 리더십</b>: 피플=Why(동기부여), 에이전트=What(태스크 설계). 인사 6단계 중 피플은 '평가', 에이전트는 '<b>채용</b>'(안 되면 즉시 교체) 중심. 승진=자율성 부여 수준.</li>
+<li><b>진짜 병목 = 3번(휴먼-에이전트 팀 = HR·조직문화)</b>. 저항감·두려움 관리가 리더의 핵심 변화관리. "<b>X톤</b>"(임원 해커톤 생중계) 제안.</li>
+<li>리더가 먼저 써야(DBS "AI는 승인이 아니라 주도·함께"). HTML 슬라이드 보고(PPT 대체) = 변화의 시작점. 본인 스킬·슬라이드 라이브러리를 GitHub public 공개.</li>
+</ul>
+<h4>우리 업무 적용점</h4>
+<ul>
+<li><b>우리 AI팀 구조와 판박이</b> — 오케스트레이터+실행+리뷰+판단 = 루과장(총괄)+서브에이전트 병렬+전문가 자문. "겉 하나, 속 병렬" 모델 검증됨(`<span class="wl">team-surface-model</span>`).</li>
+<li><b>컴퍼니 브레인 = 우리 표준·스킬/훅·근거자료집·auto-memory·KM 사이트</b> 그 자체 = 암묵지 자산화(`<span class="wl">dev-standards-pmo-tool</span>`).</li>
+<li><b>하네스/루프·가드레일 = dev-standards-kit 훅(가드레일) + PMO 게이트</b>와 정확히 대응. "가드레일 정말 중요" = 우리 무-지어내기·시크릿차단 훅.</li>
+<li><b>에이전트 리더십(채용·평가·자율성 프레임)</b> = (5) 전문가 AI 활용방안 구체화의 뼈대. 팀장님의 AI팀 운영방식 정립에 직접 적용.</li>
+<li><b>HTML 슬라이드 보고</b> = 우리 리포트/젠스파크 PPT 방향과 일치.</li>
+</ul>
+<h4>핵심 슬라이드 (캡처 → 텍스트화 · `KM/80ai_26083/` 9장)</h4>
+<ul>
+<li><b>① AX Methodology 10박스</b> — 업무구조(What): 1 업무 역할 정의(핵심)·2 핵심 업무 목록·3 시간 배분 현황·4 업무 입출력 구조 / AI전환(Why): 5 AI 대체 가능성(좁은 의미 AX)·6 협업 구조·7 성과 기준 / AI관점: 8 AI 기술 매핑·9 <b>AI 가드레일</b>(책임자·보안·통제)·10 성장 방향.</li>
+<li><b>② 리더의 3대 AX 고민</b> — Ⓐ Frontier Model(어떤 모델/내부 LLM) Ⓑ <b>Company Brain</b>(스킬 라이브러리→MCP 커넥션→날리지 베이스) Ⓒ <b>Human-Agent Team</b>(Human Harness + AI Harness = Meta Harness).</li>
+<li><b>③ AI 활용 6레벨</b>(사람 제어→AI 실행): L0 기본채팅(수동) → L1 기본기(Projects·멀티페르소나) → L2 확장·연결(Chrome·Office·부분자동화) → L3 클로드코드(감독자·조건부) → L4 에이전트 설계(Skills·MCP·고도) → L5 루프 자동화(Routines·완전자동화).</li>
+<li><b>④ 하네스 엔지니어링</b> — LLM 중심 6요소 링: <b>Role·Rubric(평가기준)·Context·Tools·Workflow·Guardrail</b>. "롤에서부터 시작".</li>
+<li><b>⑤ 루프 엔지니어링</b> — 하네스 루프를 감싸는 <b>Trigger(시작)·Stop(중단)</b> 조건.</li>
+<li><b>⑥ 50 에이전트 캐스팅</b>(팀빌더 스킬 UI·GitHub 공개) — 전략기획·마케팅·디자인·인사·재무·법무 등 50역할(예: 경영전략가·신규사업개발·사업타당성분석가·제품기획자).</li>
+<li><b>⑦ AI와 함께 일하는 7단계</b>: 1 목표 `/goal`(완료기준 먼저) · 2 형식 `/slide-library`(16:9·A4) · 3 팀구성 `/casting`(×50) · 4 리뷰 `/5color`(×5: black필자·red비판·blue옹호·silver전문가·gold고객) · 5 윤문 `/korean` · 6 검증(팩트·출처·논리 병렬) · 7 판단 `/Council`(×25).</li>
+<li><b>⑧ 라이너 스콜라</b> — 멀티에이전트가 논문 탐색·비교·인용·검토를 수행(피어리뷰 멀티페르소나 착안점).</li>
+</ul>
+<p>&gt; ★ ④⑤ 하네스/루프·가드레일 = 우리 dev-standards-kit 훅(가드레일)·PMO 게이트와 1:1. ③ 6레벨 = 우리 팀 성숙도 진단 축으로 차용 가능. ⑦ 7단계 = 우리 산출물 파이프라인(목표→형식→병렬생성→리뷰→검증→판단)과 동형.</p>
+<h4>인상 깊은 인용</h4>
+<ul>
+<li>"AI는 리더가 승인하는 게 아니라 주도하고 함께하는 것이다."(DBS) <code class="ts">[02:19]</code></li>
+<li>"가드레일 정말 중요하고요… 인간이 어디서 개입할 거냐, 워크플로우와 스톱 요건." <code class="ts">[12:46]</code></li>
+<li>"조직의 AX를 잘하려면 개인이 AI를 정말 잘 써야 된다." <code class="ts">[24:12]</code></li>
+<li>"에이전트 리더십은 철저하게 채용에 포커스가 되어 있습니다." <code class="ts">[19:39]</code></li>
+</ul><h4>🖼 캡처 이미지 (9)</h4><div class="gal"><a href="file:///C:/ai-dev/workspace/km-site/img/80ai_26083/Screenshot_20260813_071857_YouTube%20ReVanced.jpg" target="_blank"><img loading="lazy" src="file:///C:/ai-dev/workspace/km-site/img/80ai_26083/Screenshot_20260813_071857_YouTube%20ReVanced.jpg" title="Screenshot_20260813_071857_YouTube ReVanced.jpg"></a><a href="file:///C:/ai-dev/workspace/km-site/img/80ai_26083/Screenshot_20260813_072202_YouTube%20ReVanced.jpg" target="_blank"><img loading="lazy" src="file:///C:/ai-dev/workspace/km-site/img/80ai_26083/Screenshot_20260813_072202_YouTube%20ReVanced.jpg" title="Screenshot_20260813_072202_YouTube ReVanced.jpg"></a><a href="file:///C:/ai-dev/workspace/km-site/img/80ai_26083/Screenshot_20260813_072618_YouTube%20ReVanced.jpg" target="_blank"><img loading="lazy" src="file:///C:/ai-dev/workspace/km-site/img/80ai_26083/Screenshot_20260813_072618_YouTube%20ReVanced.jpg" title="Screenshot_20260813_072618_YouTube ReVanced.jpg"></a><a href="file:///C:/ai-dev/workspace/km-site/img/80ai_26083/Screenshot_20260813_072647_YouTube%20ReVanced.jpg" target="_blank"><img loading="lazy" src="file:///C:/ai-dev/workspace/km-site/img/80ai_26083/Screenshot_20260813_072647_YouTube%20ReVanced.jpg" title="Screenshot_20260813_072647_YouTube ReVanced.jpg"></a><a href="file:///C:/ai-dev/workspace/km-site/img/80ai_26083/Screenshot_20260813_072707_YouTube%20ReVanced.jpg" target="_blank"><img loading="lazy" src="file:///C:/ai-dev/workspace/km-site/img/80ai_26083/Screenshot_20260813_072707_YouTube%20ReVanced.jpg" title="Screenshot_20260813_072707_YouTube ReVanced.jpg"></a><a href="file:///C:/ai-dev/workspace/km-site/img/80ai_26083/Screenshot_20260813_072844_YouTube%20ReVanced.jpg" target="_blank"><img loading="lazy" src="file:///C:/ai-dev/workspace/km-site/img/80ai_26083/Screenshot_20260813_072844_YouTube%20ReVanced.jpg" title="Screenshot_20260813_072844_YouTube ReVanced.jpg"></a><a href="file:///C:/ai-dev/workspace/km-site/img/80ai_26083/Screenshot_20260813_073026_YouTube%20ReVanced.jpg" target="_blank"><img loading="lazy" src="file:///C:/ai-dev/workspace/km-site/img/80ai_26083/Screenshot_20260813_073026_YouTube%20ReVanced.jpg" title="Screenshot_20260813_073026_YouTube ReVanced.jpg"></a><a href="file:///C:/ai-dev/workspace/km-site/img/80ai_26083/Screenshot_20260813_073154_YouTube%20ReVanced.jpg" target="_blank"><img loading="lazy" src="file:///C:/ai-dev/workspace/km-site/img/80ai_26083/Screenshot_20260813_073154_YouTube%20ReVanced.jpg" title="Screenshot_20260813_073154_YouTube ReVanced.jpg"></a><a href="file:///C:/ai-dev/workspace/km-site/img/80ai_26083/Screenshot_20260813_073300_YouTube%20ReVanced.jpg" target="_blank"><img loading="lazy" src="file:///C:/ai-dev/workspace/km-site/img/80ai_26083/Screenshot_20260813_073300_YouTube%20ReVanced.jpg" title="Screenshot_20260813_073300_YouTube ReVanced.jpg"></a></div><div class="src muted"><a href="file:///C:/ai-bok/ref/KM/80ai_260813_074932.txt" target="_blank">📄 스크립트 전문</a></div></div>
+  </article>
+<article class="card" data-tags="AI에이전트|연구자동화|데이터파이프라인|폐쇄망SLM|AI인프라|AI거버넌스" data-text="ai 시대의 연구 자동화 — 에이전트가 연구를 수행한다 ai 에이전트가 주제발굴→실험설계→분석→논문→셀프리뷰까지 한 사이클을 자동 수행. 최대 병목은 "사람 보기 좋은" 데이터를 "ai가 일하기 좋게" 바꾸는 것. ai에이전트 연구자동화 데이터파이프라인 폐쇄망slm ai인프라 ai거버넌스">
+    <div class="chd" onclick="this.parentNode.classList.toggle('open')">
+      <div><div class="ct">AI 시대의 연구 자동화 — 에이전트가 연구를 수행한다</div><div class="cs">AI 에이전트가 주제발굴→실험설계→분석→논문→셀프리뷰까지 한 사이클을 자동 수행. 최대 병목은 "사람 보기 좋은" 데이터를 "AI가 일하기 좋게" 바꾸는 것.</div><div class="tags"><span class="tag" data-tag="AI에이전트">AI에이전트</span><span class="tag" data-tag="연구자동화">연구자동화</span><span class="tag" data-tag="데이터파이프라인">데이터파이프라인</span><span class="tag" data-tag="폐쇄망SLM">폐쇄망SLM</span><span class="tag" data-tag="AI인프라">AI인프라</span><span class="tag" data-tag="AI거버넌스">AI거버넌스</span></div></div>
+      <div class="meta"><a href="https://www.youtube.com/watch?v=IQn8_r7tMYs" target="_blank">▶ 영상</a><span class="muted">2026-08-12</span><span class="exp">▾</span></div>
+    </div>
+    <div class="cbody"><h4>핵심 키포인트</h4>
+<ul>
+<li><b>Sakana AI</b>: 연구 한 사이클(주제발굴·실험설계·분석·그래프·논문·셀프리뷰)을 사람 없이 자동 수행.</li>
+<li><b>3단계 진입</b>: ① 서버 내 계산과학(코드) — 가장 쉬움 ② 시뮬레이션(전용 SW 실행) ③ 자율실험(물리 로봇). 리버풀 광촉매 로봇 = 하루 21.6h·8일 만에 세계기록.</li>
+<li><b>국가·기업 사례</b>: Google Co-Scientist(인간 ~20명 협업), 中 사이언스원·화웨이 마인드스포어(지원형), 美 <b>제네시스 미션</b>(DOE 17개 기관 데이터 통합+AI로 몇달→며칠 가속). ※美 AI안전연구소(AISI) 역할이 '안전'→'산업 진흥'으로 전환.</li>
+<li><b>병목 = 데이터 파이프라인 기계가독성</b>: 엑셀/PDF/한글 다중헤더는 사람용이라 AI가 못 읽음 → "사람 일하기 좋게"에서 <b>"AI 일하기 좋게"</b> 로 바꿔야(진시황 수레바퀴 폭 통일 비유).</li>
+<li><b>탐색공간</b>: 정해지면 AI가 빠름 / 안 정해지면 사람 아이디어 → AI가 논문서치로 후보를 좁혀주는 협업형.</li>
+<li><b>데이터 유출 우려</b> → 기관 내부 <b>SLM</b> 구축(단, 10억원대 GPU+전기·냉난방·운영 인력 = 전사 지원 필수).</li>
+<li><b>마인드셋</b>: "하기 싫다"를 인정하고 반복·비전문 업무를 AI에 위임. "이걸요, 제가요, 왜요"=일의 의미를 묻는 신호. 가짜노동 해방.</li>
+</ul>
+<h4>우리 업무 적용점</h4>
+<ul>
+<li><b>DA 표준의 핵심 근거</b> — "AI가 읽기 좋은 데이터"(구조화·명명·메타·기계가독) = 우리 데이터 표준·산출물 무-지어내기와 정확히 일치. 우리 PMO/표준이 곧 "AI 일하기 좋은 환경 만들기".</li>
+<li><b>폐쇄망 SLM</b> — 한은 데이터유출 대응, `<span class="wl">ondevice-llm-vibecoding</span>` 검토와 직결(10억원대·전사지원 현실론 참고).</li>
+<li><b>표준화 논거</b> — 진시황 비유 = dev-standards-kit/PMO 도구의 정당화.</li>
+<li><b>AIG 강의 소재</b> — 코사이언티스트·자율실험·제네시스 미션·AISI '안전→진흥' 전환(EU Digital Omnibus 연기와 같은 결).</li>
+</ul>
+<h4>인상 깊은 인용</h4>
+<ul>
+<li>"이제까지는 사람이 일하기 좋았는데 AI가 일하기 좋은 걸 바꿔야 돼요." <code class="ts">[15:10]</code></li>
+<li>"여기가 병목(바틀넥)이고요." (데이터 파이프라인) <code class="ts">[14:14]</code></li>
+<li>"(美 AISI) 안전을 담당하는 거에서 산업 진흥 쪽으로 바꿔 버렸어요." <code class="ts">[11:15]</code></li>
+<li>"덜한 것들은 안 써서 고생하기보다 써서 이득 보는 게 훨씬 빠르다… 기관 내부 SLM으로 데이터 이슈에서 자유로워질 수 있다." <code class="ts">[19:38]</code></li>
+</ul><h4>🖼 캡처 이미지 (10)</h4><div class="gal"><a href="file:///C:/ai-dev/workspace/km-site/img/AI%EC%97%B0%EA%B5%AC_260812/Screenshot_20260812_071457_YouTube%20ReVanced.jpg" target="_blank"><img loading="lazy" src="file:///C:/ai-dev/workspace/km-site/img/AI%EC%97%B0%EA%B5%AC_260812/Screenshot_20260812_071457_YouTube%20ReVanced.jpg" title="Screenshot_20260812_071457_YouTube ReVanced.jpg"></a><a href="file:///C:/ai-dev/workspace/km-site/img/AI%EC%97%B0%EA%B5%AC_260812/Screenshot_20260812_071514_YouTube%20ReVanced.jpg" target="_blank"><img loading="lazy" src="file:///C:/ai-dev/workspace/km-site/img/AI%EC%97%B0%EA%B5%AC_260812/Screenshot_20260812_071514_YouTube%20ReVanced.jpg" title="Screenshot_20260812_071514_YouTube ReVanced.jpg"></a><a href="file:///C:/ai-dev/workspace/km-site/img/AI%EC%97%B0%EA%B5%AC_260812/Screenshot_20260812_071552_YouTube%20ReVanced.jpg" target="_blank"><img loading="lazy" src="file:///C:/ai-dev/workspace/km-site/img/AI%EC%97%B0%EA%B5%AC_260812/Screenshot_20260812_071552_YouTube%20ReVanced.jpg" title="Screenshot_20260812_071552_YouTube ReVanced.jpg"></a><a href="file:///C:/ai-dev/workspace/km-site/img/AI%EC%97%B0%EA%B5%AC_260812/Screenshot_20260812_071806_YouTube%20ReVanced.jpg" target="_blank"><img loading="lazy" src="file:///C:/ai-dev/workspace/km-site/img/AI%EC%97%B0%EA%B5%AC_260812/Screenshot_20260812_071806_YouTube%20ReVanced.jpg" title="Screenshot_20260812_071806_YouTube ReVanced.jpg"></a><a href="file:///C:/ai-dev/workspace/km-site/img/AI%EC%97%B0%EA%B5%AC_260812/Screenshot_20260812_071816_YouTube%20ReVanced.jpg" target="_blank"><img loading="lazy" src="file:///C:/ai-dev/workspace/km-site/img/AI%EC%97%B0%EA%B5%AC_260812/Screenshot_20260812_071816_YouTube%20ReVanced.jpg" title="Screenshot_20260812_071816_YouTube ReVanced.jpg"></a><a href="file:///C:/ai-dev/workspace/km-site/img/AI%EC%97%B0%EA%B5%AC_260812/Screenshot_20260812_071856_YouTube%20ReVanced.jpg" target="_blank"><img loading="lazy" src="file:///C:/ai-dev/workspace/km-site/img/AI%EC%97%B0%EA%B5%AC_260812/Screenshot_20260812_071856_YouTube%20ReVanced.jpg" title="Screenshot_20260812_071856_YouTube ReVanced.jpg"></a><a href="file:///C:/ai-dev/workspace/km-site/img/AI%EC%97%B0%EA%B5%AC_260812/Screenshot_20260812_071931_YouTube%20ReVanced.jpg" target="_blank"><img loading="lazy" src="file:///C:/ai-dev/workspace/km-site/img/AI%EC%97%B0%EA%B5%AC_260812/Screenshot_20260812_071931_YouTube%20ReVanced.jpg" title="Screenshot_20260812_071931_YouTube ReVanced.jpg"></a><a href="file:///C:/ai-dev/workspace/km-site/img/AI%EC%97%B0%EA%B5%AC_260812/Screenshot_20260812_071939_YouTube%20ReVanced.jpg" target="_blank"><img loading="lazy" src="file:///C:/ai-dev/workspace/km-site/img/AI%EC%97%B0%EA%B5%AC_260812/Screenshot_20260812_071939_YouTube%20ReVanced.jpg" title="Screenshot_20260812_071939_YouTube ReVanced.jpg"></a><a href="file:///C:/ai-dev/workspace/km-site/img/AI%EC%97%B0%EA%B5%AC_260812/Screenshot_20260812_072035_YouTube%20ReVanced.jpg" target="_blank"><img loading="lazy" src="file:///C:/ai-dev/workspace/km-site/img/AI%EC%97%B0%EA%B5%AC_260812/Screenshot_20260812_072035_YouTube%20ReVanced.jpg" title="Screenshot_20260812_072035_YouTube ReVanced.jpg"></a><a href="file:///C:/ai-dev/workspace/km-site/img/AI%EC%97%B0%EA%B5%AC_260812/Screenshot_20260812_072041_YouTube%20ReVanced.jpg" target="_blank"><img loading="lazy" src="file:///C:/ai-dev/workspace/km-site/img/AI%EC%97%B0%EA%B5%AC_260812/Screenshot_20260812_072041_YouTube%20ReVanced.jpg" title="Screenshot_20260812_072041_YouTube ReVanced.jpg"></a></div><div class="src muted"><a href="file:///C:/ai-bok/ref/KM/AI%EC%97%B0%EA%B5%AC_260812_074155.txt" target="_blank">📄 스크립트 전문</a></div></div>
+  </article></div>
+</div>
+<script>
+const cards=[...document.querySelectorAll('.card')]; const sel=new Set();
+function apply(){const q=document.getElementById('q').value.toLowerCase().trim();let n=0;
+  cards.forEach(c=>{const okQ=!q||c.dataset.text.includes(q);const ct=c.dataset.tags.split('|');const okT=sel.size===0||[...sel].every(t=>ct.includes(t));
+    const show=okQ&&okT;c.style.display=show?'':'none';if(show)n++;});
+  document.getElementById('cnt').textContent=n+' / '+cards.length+' 카드';}
+document.getElementById('q').addEventListener('input',apply);
+document.querySelectorAll('#chips .chip').forEach(ch=>ch.onclick=()=>{const t=ch.dataset.tag;if(sel.has(t)){sel.delete(t);ch.classList.remove('on');}else{sel.add(t);ch.classList.add('on');}apply();});
+document.querySelectorAll('.card .tag').forEach(tg=>tg.onclick=e=>{e.stopPropagation();const t=tg.dataset.tag;const ch=[...document.querySelectorAll('#chips .chip')].find(c=>c.dataset.tag===t);if(ch)ch.click();});
+apply();
+</script></body></html>
