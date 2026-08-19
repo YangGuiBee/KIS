@@ -4,6 +4,7 @@
 const fs = require('fs');
 const path = require('path');
 const CARDS = path.join(__dirname, 'cards');
+const SITE_TITLE = 'AI 관련한 놓치면 안되는 정말 중요한 지식정보사이트(KIS)';
 const esc = s => String(s || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 const enc = p => encodeURI('file:///' + String(p || '').replace(/\\/g, '/'));
 
@@ -34,8 +35,31 @@ function renderBody(b) { // 가벼운 md→html
   return out.join('\n');
 }
 
+function sourceMtime(source) {
+  if (!source) return 0;
+  try {
+    return fs.existsSync(source) ? fs.statSync(source).mtimeMs : 0;
+  } catch {
+    return 0;
+  }
+}
+
 const files = fs.existsSync(CARDS) ? fs.readdirSync(CARDS).filter(f => f.endsWith('.md')) : [];
-const cards = files.map(f => { const p = parse(fs.readFileSync(path.join(CARDS, f), 'utf8')); return p ? { file: f, ...p } : null; }).filter(Boolean);
+const cards = files.map(f => {
+  const p = parse(fs.readFileSync(path.join(CARDS, f), 'utf8'));
+  if (!p) return null;
+  const dateMs = Date.parse(p.fm.date || '');
+  return {
+    file: f,
+    sortDate: Number.isFinite(dateMs) ? dateMs : 0,
+    sortSource: sourceMtime(p.fm.source),
+    ...p
+  };
+}).filter(Boolean).sort((a, b) =>
+  (b.sortDate - a.sortDate) ||
+  (b.sortSource - a.sortSource) ||
+  a.file.localeCompare(b.file, 'ko')
+);
 const allTags = [...new Set(cards.flatMap(c => c.fm.tags || []))].sort();
 
 const cardHtml = cards.map((c, i) => {
@@ -58,7 +82,7 @@ const cardHtml = cards.map((c, i) => {
 }).join('\n');
 
 const html = `<!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>지식정보사이트(KIS)</title><style>
+<title>${SITE_TITLE}</title><style>
 :root{--ink:#1f2937;--mut:#6b7280;--line:#e5e7eb;--blue:#2563eb;--bg:#f8fafc}
 *{box-sizing:border-box}body{margin:0;font-family:'Malgun Gothic','맑은 고딕',sans-serif;color:var(--ink);background:var(--bg)}
 header{background:linear-gradient(135deg,#0f766e,#0891b2);color:#fff;padding:24px 30px}
@@ -85,7 +109,7 @@ header h1{margin:0;font-size:22px}header .s{opacity:.9;font-size:13px;margin-top
 .gal img{width:100%;height:100px;object-fit:cover;border:1px solid var(--line);border-radius:6px;cursor:pointer;transition:.15s}.gal img:hover{transform:scale(1.03);box-shadow:0 2px 8px rgba(0,0,0,.15)}
 .count{color:var(--mut);font-size:13px}
 </style></head><body>
-<header><h1>📚 지식정보사이트(KIS)</h1></header>
+<header><h1>📚 ${SITE_TITLE}</h1></header>
 <div class="wrap">
   <div class="bar"><input id="q" placeholder="🔍 제목·요약·태그 검색"><span class="count" id="cnt"></span></div>
   <div class="chips" id="chips">${allTags.map(t => `<span class="chip" data-tag="${esc(t)}">${esc(t)}</span>`).join('')}</div>
