@@ -4,7 +4,7 @@
 const fs = require('fs');
 const path = require('path');
 const CARDS = path.join(__dirname, 'cards');
-const SITE_TITLE = 'AI 관련한 놓치면 안되는 정말 중요한 지식정보사이트(KIS)';
+const SITE_TITLE = '놓치면 안되는 정말 중요한 AI 지식정보사이트(KIS)';
 const esc = s => String(s || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 const enc = p => encodeURI('file:///' + String(p || '').replace(/\\/g, '/'));
 
@@ -100,7 +100,7 @@ header h1{margin:0;font-size:22px}header .s{opacity:.9;font-size:13px;margin-top
 .tags{margin-top:8px}.tag{display:inline-block;background:#ecfeff;color:#0e7490;border:1px solid #cffafe;border-radius:6px;padding:1px 7px;font-size:11px;margin:2px 4px 0 0}
 .meta{text-align:right;white-space:nowrap;font-size:12px;display:flex;flex-direction:column;gap:4px;align-items:flex-end}
 .meta a{color:var(--blue);text-decoration:none;font-weight:700}
-.exp{color:var(--mut)}.card.open .exp{transform:rotate(180deg)}
+.exp{color:#7dd3fc;font-size:22px;font-weight:900;line-height:1;transition:transform .15s}.card.open .exp{transform:rotate(180deg);color:#38bdf8}
 .cbody{display:none;padding:0 18px 16px;border-top:1px solid var(--line)}.card.open .cbody{display:block}
 .cbody h4{margin:14px 0 6px;font-size:14px;color:#0e7490}.cbody ul{margin:6px 0;padding-left:20px}.cbody li{font-size:13.5px;line-height:1.7;margin:3px 0}
 .cbody p{font-size:13.5px;line-height:1.7}.ts{background:#f1f5f9;padding:0 5px;border-radius:4px;font-size:12px;color:#334155}
