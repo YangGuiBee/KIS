@@ -64,7 +64,12 @@ const allTags = [...new Set(cards.flatMap(c => c.fm.tags || []))].sort();
 
 const cardHtml = cards.map((c, i) => {
   const tags = (c.fm.tags || []).map(t => `<span class="tag" data-tag="${esc(t)}">${esc(t)}</span>`).join('');
-  const vid = /^https?:/.test(c.fm.video || '') ? `<a href="${esc(c.fm.video)}" target="_blank">▶ 영상</a>` : `<span class="muted">${esc(c.fm.video || '')}</span>`;
+  const YT = '<svg class="ci" viewBox="0 0 24 24" aria-hidden="true"><path fill="#FF0000" d="M23.5 6.2a3 3 0 0 0-2.11-2.12C19.5 3.5 12 3.5 12 3.5s-7.5 0-9.39.58A3 3 0 0 0 .5 6.2 31.3 31.3 0 0 0 0 12a31.3 31.3 0 0 0 .5 5.8 3 3 0 0 0 2.11 2.12C4.5 20.5 12 20.5 12 20.5s7.5 0 9.39-.58A3 3 0 0 0 23.5 17.8 31.3 31.3 0 0 0 24 12a31.3 31.3 0 0 0-.5-5.8z"/><path fill="#fff" d="M9.6 15.6V8.4l6.2 3.6z"/></svg>';
+  const WEB = '<svg class="ci" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9.2" fill="none" stroke="#0891b2" stroke-width="1.7"/><path d="M2.8 12h18.4M12 2.8c2.6 2.5 4.1 5.9 4.1 9.2s-1.5 6.7-4.1 9.2c-2.6-2.5-4.1-5.9-4.1-9.2S9.4 5.3 12 2.8z" fill="none" stroke="#0891b2" stroke-width="1.7"/></svg>';
+  const links = [];
+  if (/^https?:/.test(c.fm.video || '')) links.push(`<a class="lnk" href="${esc(c.fm.video)}" target="_blank">${YT}YouTube</a>`);
+  if (/^https?:/.test(c.fm.link || '')) links.push(`<a class="lnk" href="${esc(c.fm.link)}" target="_blank">${WEB}웹페이지</a>`);
+  const vid = links.join('') || `<span class="muted">${esc(c.fm.video || '')}</span>`;
   const srcLink = c.fm.source ? `<a href="${enc(c.fm.source)}" target="_blank">📄 스크립트 전문</a>` : '';
   let gallery = '';
   if (c.fm.images && fs.existsSync(c.fm.images)) {
@@ -100,6 +105,7 @@ header h1{margin:0;font-size:22px}header .s{opacity:.9;font-size:13px;margin-top
 .tags{margin-top:8px}.tag{display:inline-block;background:#ecfeff;color:#0e7490;border:1px solid #cffafe;border-radius:6px;padding:1px 7px;font-size:11px;margin:2px 4px 0 0}
 .meta{text-align:right;white-space:nowrap;font-size:12px;display:flex;flex-direction:column;gap:4px;align-items:flex-end}
 .meta a{color:var(--blue);text-decoration:none;font-weight:700}
+.lnk{display:inline-flex;align-items:center;gap:5px}.ci{width:16px;height:16px;flex:0 0 auto}
 .exp{color:#7dd3fc;font-size:22px;font-weight:900;line-height:1;transition:transform .15s}.card.open .exp{transform:rotate(180deg);color:#38bdf8}
 .cbody{display:none;padding:0 18px 16px;border-top:1px solid var(--line)}.card.open .cbody{display:block}
 .cbody h4{margin:14px 0 6px;font-size:14px;color:#0e7490}.cbody ul{margin:6px 0;padding-left:20px}.cbody li{font-size:13.5px;line-height:1.7;margin:3px 0}
