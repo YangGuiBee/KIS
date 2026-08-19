@@ -66,9 +66,11 @@ const cardHtml = cards.map((c, i) => {
   const tags = (c.fm.tags || []).map(t => `<span class="tag" data-tag="${esc(t)}">${esc(t)}</span>`).join('');
   const YT = '<svg class="ci" viewBox="0 0 24 24" aria-hidden="true"><path fill="#FF0000" d="M23.5 6.2a3 3 0 0 0-2.11-2.12C19.5 3.5 12 3.5 12 3.5s-7.5 0-9.39.58A3 3 0 0 0 .5 6.2 31.3 31.3 0 0 0 0 12a31.3 31.3 0 0 0 .5 5.8 3 3 0 0 0 2.11 2.12C4.5 20.5 12 20.5 12 20.5s7.5 0 9.39-.58A3 3 0 0 0 23.5 17.8 31.3 31.3 0 0 0 24 12a31.3 31.3 0 0 0-.5-5.8z"/><path fill="#fff" d="M9.6 15.6V8.4l6.2 3.6z"/></svg>';
   const WEB = '<svg class="ci" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9.2" fill="none" stroke="#0891b2" stroke-width="1.7"/><path d="M2.8 12h18.4M12 2.8c2.6 2.5 4.1 5.9 4.1 9.2s-1.5 6.7-4.1 9.2c-2.6-2.5-4.1-5.9-4.1-9.2S9.4 5.3 12 2.8z" fill="none" stroke="#0891b2" stroke-width="1.7"/></svg>';
+  const hasYt = /^https?:/.test(c.fm.video || '');
+  const hasWww = /^https?:/.test(c.fm.link || '');
   const links = [];
-  if (/^https?:/.test(c.fm.video || '')) links.push(`<a class="lnk" href="${esc(c.fm.video)}" target="_blank">${YT}YouTube</a>`);
-  if (/^https?:/.test(c.fm.link || '')) links.push(`<a class="lnk" href="${esc(c.fm.link)}" target="_blank">${WEB}WWW</a>`);
+  if (hasYt) links.push(`<a class="lnk" href="${esc(c.fm.video)}" target="_blank">${YT}YouTube</a>`);
+  if (hasWww) links.push(`<a class="lnk" href="${esc(c.fm.link)}" target="_blank">${WEB}WWW</a>`);
   const vid = links.join('') || `<span class="muted">${esc(c.fm.video || '')}</span>`;
   const srcLink = c.fm.source ? `<a href="${enc(c.fm.source)}" target="_blank">📄 스크립트 전문</a>` : '';
   let gallery = '';
@@ -77,7 +79,7 @@ const cardHtml = cards.map((c, i) => {
     if (imgs.length) gallery = `<h4>🖼 캡처 이미지 (${imgs.length})</h4><div class="gal">` +
       imgs.map(im => { const u = enc(c.fm.images.replace(/\\/g, '/') + '/' + im); return `<a href="${u}" target="_blank"><img loading="lazy" src="${u}" title="${esc(im)}"></a>`; }).join('') + `</div>`;
   }
-  return `<article class="card" data-tags="${esc((c.fm.tags || []).join('|'))}" data-text="${esc((c.fm.title + ' ' + c.fm.summary + ' ' + (c.fm.tags || []).join(' ')).toLowerCase())}">
+  return `<article class="card" data-yt="${hasYt ? 1 : 0}" data-www="${hasWww ? 1 : 0}" data-tags="${esc((c.fm.tags || []).join('|'))}" data-text="${esc((c.fm.title + ' ' + c.fm.summary + ' ' + (c.fm.tags || []).join(' ')).toLowerCase())}">
     <div class="chd" onclick="this.parentNode.classList.toggle('open')">
       <div><div class="ct">${esc(c.fm.title)}</div><div class="cs">${esc(c.fm.summary)}</div><div class="tags">${tags}</div></div>
       <div class="meta">${vid}<span class="muted">${esc(c.fm.date || '')}</span><span class="exp">▾</span></div>
@@ -124,10 +126,10 @@ header h1{margin:0;font-size:22px}header .s{opacity:.9;font-size:13px;margin-top
 </div>
 <script>
 const cards=[...document.querySelectorAll('.card')]; const sel=new Set();
-function apply(){const q=document.getElementById('q').value.toLowerCase().trim();let n=0;
+function apply(){const q=document.getElementById('q').value.toLowerCase().trim();let n=0,ny=0,nw=0;
   cards.forEach(c=>{const okQ=!q||c.dataset.text.includes(q);const ct=c.dataset.tags.split('|');const okT=sel.size===0||[...sel].every(t=>ct.includes(t));
-    const show=okQ&&okT;c.style.display=show?'':'none';if(show)n++;});
-  document.getElementById('cnt').textContent=n+' / '+cards.length+' 카드';}
+    const show=okQ&&okT;c.style.display=show?'':'none';if(show){n++;if(c.dataset.yt==='1')ny++;if(c.dataset.www==='1')nw++;}});
+  document.getElementById('cnt').textContent='총 '+n+' 건(YouTube '+ny+'건, WWW '+nw+'건)';}
 document.getElementById('q').addEventListener('input',apply);
 document.querySelectorAll('#chips .chip').forEach(ch=>ch.onclick=()=>{const t=ch.dataset.tag;if(sel.has(t)){sel.delete(t);ch.classList.remove('on');}else{sel.add(t);ch.classList.add('on');}apply();});
 document.querySelectorAll('.card .tag').forEach(tg=>tg.onclick=e=>{e.stopPropagation();const t=tg.dataset.tag;const ch=[...document.querySelectorAll('#chips .chip')].find(c=>c.dataset.tag===t);if(ch)ch.click();});
