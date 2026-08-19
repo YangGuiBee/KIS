@@ -68,7 +68,7 @@ const cardHtml = cards.map((c, i) => {
   const WEB = '<svg class="ci" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9.2" fill="none" stroke="#0891b2" stroke-width="1.7"/><path d="M2.8 12h18.4M12 2.8c2.6 2.5 4.1 5.9 4.1 9.2s-1.5 6.7-4.1 9.2c-2.6-2.5-4.1-5.9-4.1-9.2S9.4 5.3 12 2.8z" fill="none" stroke="#0891b2" stroke-width="1.7"/></svg>';
   const links = [];
   if (/^https?:/.test(c.fm.video || '')) links.push(`<a class="lnk" href="${esc(c.fm.video)}" target="_blank">${YT}YouTube</a>`);
-  if (/^https?:/.test(c.fm.link || '')) links.push(`<a class="lnk" href="${esc(c.fm.link)}" target="_blank">${WEB}웹페이지</a>`);
+  if (/^https?:/.test(c.fm.link || '')) links.push(`<a class="lnk" href="${esc(c.fm.link)}" target="_blank">${WEB}WWW</a>`);
   const vid = links.join('') || `<span class="muted">${esc(c.fm.video || '')}</span>`;
   const srcLink = c.fm.source ? `<a href="${enc(c.fm.source)}" target="_blank">📄 스크립트 전문</a>` : '';
   let gallery = '';
