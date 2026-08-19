@@ -93,7 +93,8 @@ header h1{margin:0;font-size:22px}header .s{opacity:.9;font-size:13px;margin-top
 .chips{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px}
 .chip{padding:5px 11px;border:1px solid var(--line);border-radius:999px;font-size:12px;cursor:pointer;background:#fff}
 .chip.on{background:var(--blue);color:#fff;border-color:var(--blue)}
-.card{background:#fff;border:1px solid var(--line);border-radius:12px;margin-bottom:12px;overflow:hidden}
+.card{background:#fff;border:2px solid #7dd3fc;border-radius:12px;margin-bottom:12px;overflow:hidden}
+.card.open{border-color:#38bdf8}
 .chd{display:flex;justify-content:space-between;gap:12px;padding:14px 16px;cursor:pointer}
 .ct{font-weight:800;font-size:15px}.cs{color:var(--mut);font-size:13px;margin-top:4px;line-height:1.5}
 .tags{margin-top:8px}.tag{display:inline-block;background:#ecfeff;color:#0e7490;border:1px solid #cffafe;border-radius:6px;padding:1px 7px;font-size:11px;margin:2px 4px 0 0}
