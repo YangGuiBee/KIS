@@ -25,14 +25,17 @@ if (dupCard) {
   process.exit(1);
 }
 
+// PC마다 yt-dlp가 PATH에 잡혀있는지, python -m으로만 되는지 다를 수 있어 순서대로 시도한다.
 const YTDLP_CANDIDATES = [
-  'yt-dlp',
-  'C:/Users/BOK/AppData/Roaming/Python/Python312/Scripts/yt-dlp.exe'
+  { bin: 'yt-dlp', pre: [] },
+  { bin: 'python', pre: ['-m', 'yt_dlp'] },
+  { bin: 'py', pre: ['-m', 'yt_dlp'] },
+  { bin: 'C:/Users/BOK/AppData/Roaming/Python/Python312/Scripts/yt-dlp.exe', pre: [] } // 이 PC(홈) 전용 최후 fallback
 ];
 function runYtDlp(args) {
   const env = Object.assign({}, process.env, { PYTHONIOENCODING: 'utf-8', PYTHONUTF8: '1' });
-  for (const bin of YTDLP_CANDIDATES) {
-    const r = spawnSync(bin, args, { encoding: 'utf8', env });
+  for (const { bin, pre } of YTDLP_CANDIDATES) {
+    const r = spawnSync(bin, [...pre, ...args], { encoding: 'utf8', env });
     if (!r.error) return r;
   }
   throw new Error('yt-dlp를 찾을 수 없습니다. `python -m pip install --user yt-dlp` 로 설치하세요.');
