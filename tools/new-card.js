@@ -115,7 +115,10 @@ const cardPath = path.join(__dirname, '..', 'cards', `${slug}.md`);
 if (fs.existsSync(cardPath)) {
   console.log(`  이미 카드가 있습니다: ${cardPath} (건너뜀)`);
 } else {
-  const scriptRelForSource = scriptPath.replace(/\\/g, '/');
+  // KIS 폴더(=이 저장소 루트) 기준 상대경로로 저장 — C:\AI든 C:\ai-bok든 KIS와 scripts가
+  // 나란히 클론되어 있기만 하면 어느 PC에서 열어도 링크가 맞는다(build.js의 srcHref 참고).
+  const kisRoot = path.join(__dirname, '..');
+  const scriptRelForSource = path.relative(kisRoot, scriptPath).replace(/\\/g, '/');
   const skeleton = `---
 title: ${title} — ${uploader}
 video: ${url}

@@ -1,7 +1,7 @@
 ---
 title: 디지털 전환(DX)에서 AI 전환(AX)으로 — 김덕현(DK융합전략연구소 대표) 특강
 video: https://youtu.be/JC7_Cdvza0Y
-source: C:/AI/scripts/KIS/2026-08-26/DX에서AX로_김덕현_전문스크립트.txt
+source: ../scripts/KIS/2026-08-26/DX에서AX로_김덕현_전문스크립트.txt
 date: 2026-08-26
 tags: [DX, AX, AI전환, AI거버넌스, 디지털전환, 에이전틱AI, 무지어내기]
 summary: CNG TV 방영, 4차산업혁명연구소 한석희 사회. 서울대 산업공학·카이스트 경영과학 박사 출신 김덕현(前 세종사이버대 교수, DK융합전략연구소 대표)의 "DX에서 AX로" 강연. AI 패러다임 계보, "Do not use LLM" 경고, DX 4단계론, 체크리스트, 마무리 3라(파트너·툴·타임)까지.

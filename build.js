@@ -7,6 +7,17 @@ const CARDS = path.join(__dirname, 'cards');
 const SITE_TITLE = '놓치면 안되는 정말 중요한 AI 지식정보사이트(KIS)';
 const esc = s => String(s || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 const enc = p => encodeURI('file:///' + String(p || '').replace(/\\/g, '/'));
+const isAbsLocalPath = p => /^[A-Za-z]:[\\/]/.test(String(p || ''));
+// source/images는 두 가지 형태를 지원한다:
+//  - 절대경로(C:\... , 레거시): file:// 링크로 변환 — 만든 그 PC에서만 열림
+//  - 상대경로(../scripts/..., 권장): index.html 기준 상대링크 — KIS와 나란히 클론된 어느 PC에서든 열림
+//    (예: C:\AI\KIS + C:\AI\scripts 든, C:\ai-bok\KIS + C:\ai-bok\scripts 든 동일하게 동작)
+function srcHref(p) {
+  if (!p) return '';
+  if (/^https?:/i.test(p)) return p;
+  if (isAbsLocalPath(p)) return enc(p);
+  return String(p).replace(/\\/g, '/');
+}
 
 function parse(md) {
   const m = md.match(/^---\r?\n([\s\S]*?)\r?\n---\r?\n([\s\S]*)$/);
@@ -39,7 +50,9 @@ function renderBody(b) { // 가벼운 md→html
 function sourceMtime(source) {
   if (!source) return 0;
   try {
-    return fs.existsSync(source) ? fs.statSync(source).mtimeMs : 0;
+    if (/^https?:/i.test(source)) return 0;
+    const p = isAbsLocalPath(source) ? source : path.join(__dirname, source);
+    return fs.existsSync(p) ? fs.statSync(p).mtimeMs : 0;
   } catch {
     return 0;
   }
@@ -84,7 +97,7 @@ const cardHtml = cards.map((c, i) => {
   if (c.fm.edeadline) _ei.push(`<b>마감</b> ${esc(c.fm.edeadline)}`);
   const evtInfo = (c.fm.etype || _ei.length)
     ? `<div class="evt">${c.fm.etype ? `<span class="et">${esc(c.fm.etype)}</span>` : ''}<span class="ei">${_ei.join(' · ')}</span></div>` : '';
-  const srcLink = c.fm.source ? `<a href="${enc(c.fm.source)}" target="_blank">📄 스크립트 전문</a>` : '';
+  const srcLink = c.fm.source ? `<a href="${srcHref(c.fm.source)}" target="_blank">📄 스크립트 전문</a>` : '';
   let gallery = '';
   if (c.fm.images && fs.existsSync(c.fm.images)) {
     const imgs = fs.readdirSync(c.fm.images).filter(f => /\.(png|jpe?g)$/i.test(f)).sort();
