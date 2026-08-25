@@ -20,11 +20,12 @@ function parse(md) {
   });
   return { fm, body };
 }
+const VAULT_KIS_NOTES = 'C:/AX/obsidian/Raw/9.프로젝트(KIS)';
 function renderBody(b) { // 가벼운 md→html
   const out = []; let inUl = false;
   for (let line of b.split(/\r?\n/)) {
-    line = line.replace(/\[\[([^\]]+)\]\]/g, (_, x) => `<span class="wl">${esc(x)}</span>`);
-    line = esc(line).replace(/&lt;span class="wl"&gt;/g, '<span class="wl">').replace(/&lt;\/span&gt;/g, '</span>');
+    line = line.replace(/\[\[([^\]]+)\]\]/g, (_, x) => `<a class="wl" href="${enc(VAULT_KIS_NOTES + '/' + x + '.md')}" target="_blank">${esc(x)}</a>`);
+    line = esc(line).replace(/&lt;a class="wl" href="([^"]*)" target="_blank"&gt;/g, '<a class="wl" href="$1" target="_blank">').replace(/&lt;\/a&gt;/g, '</a>');
     line = line.replace(/\*\*(.+?)\*\*/g, '<b>$1</b>').replace(/\[(\d{1,2}:\d{2})\]/g, '<code class="ts">[$1]</code>');
     if (/^##\s+/.test(line)) { if (inUl) { out.push('</ul>'); inUl = false; } out.push(`<h4>${line.replace(/^##\s+/, '')}</h4>`); }
     else if (/^-\s+/.test(line)) { if (!inUl) { out.push('<ul>'); inUl = true; } out.push(`<li>${line.replace(/^-\s+/, '')}</li>`); }
@@ -130,7 +131,7 @@ body.dark .et{background:#3b2f63;color:#c4b5fd;border-color:#4c3f7a}
 .cbody{display:none;padding:0 18px 16px;border-top:1px solid var(--line)}.card.open .cbody{display:block}
 .cbody h4{margin:14px 0 6px;font-size:14px;color:#0e7490}.cbody ul{margin:6px 0;padding-left:20px}.cbody li{font-size:13.5px;line-height:1.7;margin:3px 0}
 .cbody p{font-size:13.5px;line-height:1.7}.ts{background:#f1f5f9;padding:0 5px;border-radius:4px;font-size:12px;color:#334155}
-.wl{background:#eef2ff;color:#4338ca;border-radius:4px;padding:0 5px;font-size:12px}
+.wl{background:#eef2ff;color:#4338ca;border-radius:4px;padding:0 5px;font-size:12px;text-decoration:none;cursor:pointer}.wl:hover{text-decoration:underline}
 .muted{color:var(--mut)}.src{margin-top:12px;font-size:12px;word-break:break-all}.src a{color:var(--blue);font-weight:700;text-decoration:none}
 .gal{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px;margin:8px 0 4px}
 .gal img{width:100%;height:100px;object-fit:cover;border:1px solid var(--line);border-radius:6px;cursor:pointer;transition:.15s}.gal img:hover{transform:scale(1.03);box-shadow:0 2px 8px rgba(0,0,0,.15)}
