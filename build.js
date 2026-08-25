@@ -90,21 +90,24 @@ const cardHtml = cards.map((c, i) => {
 
 const html = `<!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>${SITE_TITLE}</title><style>
-:root{--ink:#1f2937;--mut:#6b7280;--line:#e5e7eb;--blue:#2563eb;--bg:#f8fafc}
-*{box-sizing:border-box}body{margin:0;font-family:'Malgun Gothic','맑은 고딕',sans-serif;color:var(--ink);background:var(--bg)}
-header{background:linear-gradient(135deg,#0f766e,#0891b2);color:#fff;padding:24px 30px}
+:root{--ink:#1f2937;--mut:#6b7280;--line:#e5e7eb;--blue:#2563eb;--bg:#f8fafc;--card:#fff;--tagbg:#ecfeff;--tagink:#0e7490;--tagline:#cffafe}
+body.dark{--ink:#e5e7eb;--mut:#9ca3af;--line:#334155;--blue:#38bdf8;--bg:#0f172a;--card:#1e293b;--tagbg:#0e3a44;--tagink:#67e8f9;--tagline:#155e63}
+*{box-sizing:border-box}body{margin:0;font-family:'Malgun Gothic','맑은 고딕',sans-serif;color:var(--ink);background:var(--bg);transition:background .2s,color .2s}
+header{background:linear-gradient(135deg,#0f766e,#0891b2);color:#fff;padding:24px 30px;display:flex;justify-content:space-between;align-items:center;gap:12px}
+.tgl{cursor:pointer;border:1px solid rgba(255,255,255,.55);background:rgba(255,255,255,.14);color:#fff;border-radius:999px;padding:7px 14px;font-size:13px;font-weight:700;white-space:nowrap}.tgl:hover{background:rgba(255,255,255,.26)}
 header h1{margin:0;font-size:22px}header .s{opacity:.9;font-size:13px;margin-top:5px}
 .wrap{max-width:1000px;margin:0 auto;padding:20px 30px 60px}
 .bar{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin:6px 0 14px}
-#q{flex:1;min-width:220px;padding:10px 12px;border:1px solid var(--line);border-radius:8px;font-size:14px}
+#q{flex:1;min-width:220px;padding:10px 12px;border:1px solid var(--line);border-radius:8px;font-size:14px;background:var(--card);color:var(--ink)}
 .chips{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px}
-.chip{padding:5px 11px;border:1px solid var(--line);border-radius:999px;font-size:12px;cursor:pointer;background:#fff}
+.chip{padding:5px 11px;border:1px solid var(--line);border-radius:999px;font-size:12px;cursor:pointer;background:var(--card);color:var(--ink)}
 .chip.on{background:var(--blue);color:#fff;border-color:var(--blue)}
-.card{background:#fff;border:2px solid #7dd3fc;border-radius:12px;margin-bottom:12px;overflow:hidden}
+.card{background:var(--card);border:2px solid #7dd3fc;border-radius:12px;margin-bottom:12px;overflow:hidden;transition:transform .18s ease,box-shadow .18s ease,border-color .18s}
+.card:hover{transform:translateY(-3px);box-shadow:0 8px 22px rgba(8,145,178,.20)}
 .card.open{border-color:#38bdf8}
 .chd{display:flex;justify-content:space-between;gap:12px;padding:14px 16px;cursor:pointer}
 .ct{font-weight:800;font-size:15px}.cs{color:var(--mut);font-size:13px;margin-top:4px;line-height:1.5}
-.tags{margin-top:8px}.tag{display:inline-block;background:#ecfeff;color:#0e7490;border:1px solid #cffafe;border-radius:6px;padding:1px 7px;font-size:11px;margin:2px 4px 0 0}
+.tags{margin-top:8px}.tag{display:inline-block;background:var(--tagbg);color:var(--tagink);border:1px solid var(--tagline);border-radius:6px;padding:1px 7px;font-size:11px;margin:2px 4px 0 0;cursor:pointer}
 .meta{text-align:right;white-space:nowrap;font-size:12px;display:flex;flex-direction:column;gap:4px;align-items:flex-end}
 .meta a{color:var(--blue);text-decoration:none;font-weight:700}
 .lnk{display:inline-flex;align-items:center;gap:5px}.ci{width:16px;height:16px;flex:0 0 auto}
@@ -118,13 +121,17 @@ header h1{margin:0;font-size:22px}header .s{opacity:.9;font-size:13px;margin-top
 .gal img{width:100%;height:100px;object-fit:cover;border:1px solid var(--line);border-radius:6px;cursor:pointer;transition:.15s}.gal img:hover{transform:scale(1.03);box-shadow:0 2px 8px rgba(0,0,0,.15)}
 .count{color:var(--mut);font-size:13px}
 </style></head><body>
-<header><h1>📚 ${SITE_TITLE}</h1></header>
+<header><h1>📚 ${SITE_TITLE}</h1><button class="tgl" id="tgl">다크모드</button></header>
 <div class="wrap">
   <div class="bar"><input id="q" placeholder="🔍 제목·요약·태그 검색"><span class="count" id="cnt"></span></div>
   <div class="chips" id="chips">${allTags.map(t => `<span class="chip" data-tag="${esc(t)}">${esc(t)}</span>`).join('')}</div>
   <div id="list">${cardHtml || '<p class="muted">카드가 없습니다. cards/ 에 .md를 추가하고 node build.js 재실행.</p>'}</div>
 </div>
 <script>
+const _tgl=document.getElementById('tgl');
+function _setTheme(d){document.body.classList.toggle('dark',d);_tgl.textContent=d?'라이트모드':'다크모드';}
+_setTheme(localStorage.getItem('kis-theme')==='dark');
+_tgl.onclick=()=>{const d=!document.body.classList.contains('dark');localStorage.setItem('kis-theme',d?'dark':'light');_setTheme(d);};
 const cards=[...document.querySelectorAll('.card')]; const sel=new Set();
 function apply(){const q=document.getElementById('q').value.toLowerCase().trim();let n=0,ny=0,nw=0;
   cards.forEach(c=>{const okQ=!q||c.dataset.text.includes(q);const ct=c.dataset.tags.split('|');const okT=sel.size===0||[...sel].every(t=>ct.includes(t));
