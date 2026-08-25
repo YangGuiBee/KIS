@@ -1,8 +1,10 @@
-// YouTube URL 하나로 (1) 자동자막 다운로드 (2) 정제해서 전문 스크립트 txt 저장
+// YouTube URL 하나로 (1) 자동자막 다운로드 (2) 정제해서 전문 스크립트 txt를
+// 비공개 저장소(C:\AI\scripts\KIS\, github.com/YangGuiBee/scripts private repo)에 저장+push
 // (3) cards/ 에 프론트matter가 채워진 카드 스켈레톤 생성까지 자동화한다.
 // 핵심 키포인트/요약 "본문"은 절대 자동 생성하지 않는다 — 무-지어내기 원칙상
 // 반드시 스크립트를 실제로 읽은 사람(또는 이 스크립트를 실행한 클로드 세션)이 채워야 한다.
 // 실행: node tools/new-card.js https://youtu.be/XXXXXXXXXXX
+// 사전조건: C:\AI\scripts (private repo, KIS와 sibling)가 클론되어 있어야 함
 'use strict';
 const fs = require('fs');
 const path = require('path');
@@ -79,12 +81,32 @@ function cleanVtt(vttText) {
 const cleaned = cleanVtt(fs.readFileSync(vttPath, 'utf8'));
 fs.unlinkSync(vttPath);
 
+// 전문 스크립트는 KIS 저장소가 아니라 별도 비공개 저장소(scripts, KIS 폴더 하위)에 보관한다.
+// KIS 저장소와 나란히(sibling) 클론되어 있어야 함: C:\AI\KIS, C:\AI\scripts
+const SCRIPTS_REPO = path.join(__dirname, '..', '..', 'scripts');
+const SCRIPTS_PROJECT_DIR = path.join(SCRIPTS_REPO, 'KIS');
+if (!fs.existsSync(SCRIPTS_REPO)) {
+  console.error(`전문 스크립트 저장소가 없습니다: ${SCRIPTS_REPO}`);
+  console.error('먼저 클론하세요: git clone https://github.com/YangGuiBee/scripts.git (C:\\AI\\scripts 위치)');
+  process.exit(1);
+}
+
 const safeTitle = title.replace(/[\\/:*?"<>|]/g, '').slice(0, 40);
-const scriptDir = path.join(__dirname, '..', 'scripts', today);
+const scriptDir = path.join(SCRIPTS_PROJECT_DIR, today);
 fs.mkdirSync(scriptDir, { recursive: true });
 const scriptPath = path.join(scriptDir, `${safeTitle}_전문스크립트.txt`);
 fs.writeFileSync(scriptPath, cleaned + '\n', 'utf8');
-console.log(`  저장: ${scriptPath} (${cleaned.length}자, 로컬 전용·gitignore)`);
+console.log(`  저장: ${scriptPath} (${cleaned.length}자)`);
+
+const gitAdd = spawnSync('git', ['add', path.relative(SCRIPTS_REPO, scriptPath)], { cwd: SCRIPTS_REPO, encoding: 'utf8' });
+const gitCommit = spawnSync('git', ['commit', '-m', `KIS 스크립트 추가: ${safeTitle}`], { cwd: SCRIPTS_REPO, encoding: 'utf8' });
+const gitPush = spawnSync('git', ['push', 'origin', 'main'], { cwd: SCRIPTS_REPO, encoding: 'utf8' });
+if (gitPush.status === 0) {
+  console.log('  scripts 저장소에 commit+push 완료(비공개 저장소)');
+} else {
+  console.log('  ⚠ scripts 저장소 commit/push 실패 — 나중에 C:\\AI\\scripts 에서 수동으로 git add/commit/push 하세요.');
+  console.log('  ' + (gitCommit.stderr || gitPush.stderr || '').trim());
+}
 
 console.log('[4/4] 카드 스켈레톤 생성');
 const slugBase = title.replace(/[\\/:*?"<>|[\]()!]/g, '').replace(/\s+/g, '').slice(0, 20);
