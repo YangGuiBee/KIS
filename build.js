@@ -75,19 +75,42 @@ const cards = files.map(f => {
   a.file.localeCompare(b.file, 'ko')
 );
 const allTags = [...new Set(cards.flatMap(c => c.fm.tags || []))].sort();
+const TYPE_TABS = [
+  { key: 'yt', label: 'YouTube' },
+  { key: 'www', label: 'WWW' },
+  { key: 'ev', label: 'Event' },
+  { key: 'paper', label: 'Paper' },
+  { key: 'news', label: 'News' },
+];
+const typeCount = k => cards.filter(c => {
+  const hasYt = /^https?:/.test(c.fm.video || '');
+  const hasWww = /^https?:/.test(c.fm.link || '');
+  const hasEvt = /^https?:/.test(c.fm.event || '');
+  const hasPaper = /^https?:/.test(c.fm.paper || '');
+  const hasNews = /^https?:/.test(c.fm.news || '');
+  const t = hasYt ? 'yt' : hasWww ? 'www' : hasEvt ? 'ev' : hasPaper ? 'paper' : hasNews ? 'news' : 'etc';
+  return t === k;
+}).length;
 
 const cardHtml = cards.map((c, i) => {
   const tags = (c.fm.tags || []).map(t => `<span class="tag" data-tag="${esc(t)}">${esc(t)}</span>`).join('');
   const YT = '<svg class="ci" viewBox="0 0 24 24" aria-hidden="true"><path fill="#FF0000" d="M23.5 6.2a3 3 0 0 0-2.11-2.12C19.5 3.5 12 3.5 12 3.5s-7.5 0-9.39.58A3 3 0 0 0 .5 6.2 31.3 31.3 0 0 0 0 12a31.3 31.3 0 0 0 .5 5.8 3 3 0 0 0 2.11 2.12C4.5 20.5 12 20.5 12 20.5s7.5 0 9.39-.58A3 3 0 0 0 23.5 17.8 31.3 31.3 0 0 0 24 12a31.3 31.3 0 0 0-.5-5.8z"/><path fill="#fff" d="M9.6 15.6V8.4l6.2 3.6z"/></svg>';
   const WEB = '<svg class="ci" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9.2" fill="none" stroke="#0891b2" stroke-width="1.7"/><path d="M2.8 12h18.4M12 2.8c2.6 2.5 4.1 5.9 4.1 9.2s-1.5 6.7-4.1 9.2c-2.6-2.5-4.1-5.9-4.1-9.2S9.4 5.3 12 2.8z" fill="none" stroke="#0891b2" stroke-width="1.7"/></svg>';
   const EVT = '<svg class="ci" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4.5" width="18" height="16" rx="2" fill="none" stroke="#7c3aed" stroke-width="1.7"/><path d="M3 9h18M8 3v3M16 3v3" stroke="#7c3aed" stroke-width="1.7" fill="none" stroke-linecap="round"/></svg>';
+  const PAPER = '<svg class="ci" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 2.8h9l4 4V21a.6.6 0 0 1-.6.6H6A.6.6 0 0 1 5.4 21V3.4A.6.6 0 0 1 6 2.8z" fill="none" stroke="#16a34a" stroke-width="1.7"/><path d="M14.6 2.8V7h4.2M8.2 12h7.6M8.2 15.4h7.6M8.2 18.8h4.6" stroke="#16a34a" stroke-width="1.5" fill="none" stroke-linecap="round"/></svg>';
+  const NEWS = '<svg class="ci" viewBox="0 0 24 24" aria-hidden="true"><rect x="2.8" y="5.2" width="15.6" height="14" rx="1.2" fill="none" stroke="#ea580c" stroke-width="1.7"/><path d="M18.4 8.6h2.2a.6.6 0 0 1 .6.6v9.2a1.6 1.6 0 0 1-1.6 1.6H6" stroke="#ea580c" stroke-width="1.7" fill="none" stroke-linecap="round"/><path d="M5.6 8.6h6.4v4H5.6zM5.6 14.6h9.2M5.6 17h9.2" stroke="#ea580c" stroke-width="1.4" fill="none" stroke-linecap="round"/></svg>';
   const hasYt = /^https?:/.test(c.fm.video || '');
   const hasWww = /^https?:/.test(c.fm.link || '');
   const hasEvt = /^https?:/.test(c.fm.event || '');
+  const hasPaper = /^https?:/.test(c.fm.paper || '');
+  const hasNews = /^https?:/.test(c.fm.news || '');
+  const type = hasYt ? 'yt' : hasWww ? 'www' : hasEvt ? 'ev' : hasPaper ? 'paper' : hasNews ? 'news' : 'etc';
   const links = [];
   if (hasYt) links.push(`<a class="lnk" href="${esc(c.fm.video)}" target="_blank">${YT}YouTube</a>`);
   if (hasWww) links.push(`<a class="lnk" href="${esc(c.fm.link)}" target="_blank">${WEB}WWW</a>`);
   if (hasEvt) links.push(`<a class="lnk" href="${esc(c.fm.event)}" target="_blank">${EVT}Event</a>`);
+  if (hasPaper) links.push(`<a class="lnk" href="${esc(c.fm.paper)}" target="_blank">${PAPER}Paper</a>`);
+  if (hasNews) links.push(`<a class="lnk" href="${esc(c.fm.news)}" target="_blank">${NEWS}News</a>`);
   const vid = links.join('') || `<span class="muted">${esc(c.fm.video || '')}</span>`;
   const _ei = [];
   if (c.fm.edate) _ei.push(`<b>일시</b> ${esc(c.fm.edate)}`);
@@ -104,7 +127,7 @@ const cardHtml = cards.map((c, i) => {
     if (imgs.length) gallery = `<h4>🖼 캡처 이미지 (${imgs.length})</h4><div class="gal">` +
       imgs.map(im => { const u = enc(c.fm.images.replace(/\\/g, '/') + '/' + im); return `<a href="${u}" target="_blank"><img loading="lazy" src="${u}" title="${esc(im)}"></a>`; }).join('') + `</div>`;
   }
-  return `<article class="card" data-yt="${hasYt ? 1 : 0}" data-www="${hasWww ? 1 : 0}" data-ev="${hasEvt ? 1 : 0}" data-tags="${esc((c.fm.tags || []).join('|'))}" data-text="${esc((c.fm.title + ' ' + c.fm.summary + ' ' + (c.fm.tags || []).join(' ')).toLowerCase())}">
+  return `<article class="card" data-type="${type}" data-tags="${esc((c.fm.tags || []).join('|'))}" data-text="${esc((c.fm.title + ' ' + c.fm.summary + ' ' + (c.fm.tags || []).join(' ')).toLowerCase())}">
     <div class="chd" onclick="this.parentNode.classList.toggle('open')">
       <div><div class="ct">${esc(c.fm.title)}</div><div class="cs">${esc(c.fm.summary)}</div>${evtInfo}<div class="tags">${tags}</div></div>
       <div class="meta">${vid}<span class="muted">${esc(c.fm.date || '')}</span><span class="exp">▾</span></div>
@@ -127,6 +150,12 @@ header h1{margin:0;font-size:22px}header .s{opacity:.9;font-size:13px;margin-top
 .chips{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px}
 .chip{padding:5px 11px;border:1px solid var(--line);border-radius:999px;font-size:12px;cursor:pointer;background:var(--card);color:var(--ink)}
 .chip.on{background:var(--blue);color:#fff;border-color:var(--blue)}
+.tabs{display:flex;gap:4px;flex-wrap:wrap;margin-bottom:14px;border-bottom:2px solid var(--line)}
+.tab{padding:9px 16px;border:none;background:none;color:var(--mut);font-size:13.5px;font-weight:700;cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-2px}
+.tab:hover{color:var(--ink)}
+.tab.on{color:var(--blue);border-bottom-color:var(--blue)}
+.tab .tc{color:var(--mut);font-weight:400;margin-left:3px}
+.tab.on .tc{color:var(--blue)}
 .card{background:var(--card);border:2px solid #7dd3fc;border-radius:12px;margin-bottom:12px;overflow:hidden;transition:transform .18s ease,box-shadow .18s ease,border-color .18s}
 .card:hover{transform:translateY(-3px);box-shadow:0 8px 22px rgba(8,145,178,.20)}
 .card.open{border-color:#38bdf8}
@@ -153,6 +182,7 @@ body.dark .et{background:#3b2f63;color:#c4b5fd;border-color:#4c3f7a}
 <header><h1>📚 ${SITE_TITLE}</h1><button class="tgl" id="tgl">다크모드</button></header>
 <div class="wrap">
   <div class="bar"><input id="q" placeholder="🔍 제목·요약·태그 검색"><span class="count" id="cnt"></span></div>
+  <div class="tabs" id="tabs">${TYPE_TABS.map(t => `<button type="button" class="tab" data-type="${t.key}">${t.label}<span class="tc">(${typeCount(t.key)})</span></button>`).join('')}</div>
   <div class="chips" id="chips">${allTags.map(t => `<span class="chip" data-tag="${esc(t)}">${esc(t)}</span>`).join('')}</div>
   <div id="list">${cardHtml || '<p class="muted">카드가 없습니다. cards/ 에 .md를 추가하고 node build.js 재실행.</p>'}</div>
 </div>
@@ -162,14 +192,18 @@ function _setTheme(d){document.body.classList.toggle('dark',d);_tgl.textContent=
 _setTheme(localStorage.getItem('kis-theme')==='dark');
 _tgl.onclick=()=>{const d=!document.body.classList.contains('dark');localStorage.setItem('kis-theme',d?'dark':'light');_setTheme(d);};
 const cards=[...document.querySelectorAll('.card')]; const sel=new Set();
-function apply(){const q=document.getElementById('q').value.toLowerCase().trim();let n=0,ny=0,nw=0,ne=0;
-  cards.forEach(c=>{const okQ=!q||c.dataset.text.includes(q);const ct=c.dataset.tags.split('|');const okT=sel.size===0||[...sel].every(t=>ct.includes(t));
-    const show=okQ&&okT;c.style.display=show?'':'none';if(show){n++;if(c.dataset.yt==='1')ny++;if(c.dataset.www==='1')nw++;if(c.dataset.ev==='1')ne++;}});
-  document.getElementById('cnt').textContent='총 '+n+' 건 (YouTube '+ny+' · WWW '+nw+' · Event '+ne+')';}
+let activeType=localStorage.getItem('kis-tab')||'${TYPE_TABS[0].key}';
+function apply(){const q=document.getElementById('q').value.toLowerCase().trim();let n=0;
+  cards.forEach(c=>{const okQ=!q||c.dataset.text.includes(q);const ct=c.dataset.tags.split('|');const okT=sel.size===0||[...sel].every(t=>ct.includes(t));const okType=c.dataset.type===activeType;
+    const show=okQ&&okT&&okType;c.style.display=show?'':'none';if(show)n++;});
+  document.getElementById('cnt').textContent='총 '+n+' 건';}
+function setTab(k){activeType=k;localStorage.setItem('kis-tab',k);
+  document.querySelectorAll('#tabs .tab').forEach(b=>b.classList.toggle('on',b.dataset.type===k));apply();}
 document.getElementById('q').addEventListener('input',apply);
+document.querySelectorAll('#tabs .tab').forEach(b=>b.onclick=()=>setTab(b.dataset.type));
 document.querySelectorAll('#chips .chip').forEach(ch=>ch.onclick=()=>{const t=ch.dataset.tag;if(sel.has(t)){sel.delete(t);ch.classList.remove('on');}else{sel.add(t);ch.classList.add('on');}apply();});
 document.querySelectorAll('.card .tag').forEach(tg=>tg.onclick=e=>{e.stopPropagation();const t=tg.dataset.tag;const ch=[...document.querySelectorAll('#chips .chip')].find(c=>c.dataset.tag===t);if(ch)ch.click();});
-apply();
+setTab(activeType);
 </script></body></html>`;
 fs.writeFileSync(path.join(__dirname, 'index.html'), html, 'utf8');
 console.log(`빌드 완료: index.html (카드 ${cards.length}개, 태그 ${allTags.length}종)`);
