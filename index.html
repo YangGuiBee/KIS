@@ -5,7 +5,7 @@ body.dark{--ink:#e5e7eb;--mut:#9ca3af;--line:#334155;--blue:#38bdf8;--bg:#0f172a
 *{box-sizing:border-box}body{margin:0;font-family:'Malgun Gothic','맑은 고딕',sans-serif;color:var(--ink);background:var(--bg);transition:background .2s,color .2s}
 header{background:linear-gradient(135deg,#0f766e,#0891b2);color:#fff;padding:24px 30px;display:flex;justify-content:space-between;align-items:center;gap:12px}
 .tgl{cursor:pointer;border:1px solid rgba(255,255,255,.55);background:rgba(255,255,255,.14);color:#fff;border-radius:999px;padding:7px 14px;font-size:13px;font-weight:700;white-space:nowrap}.tgl:hover{background:rgba(255,255,255,.26)}
-header h1{margin:0;font-size:22px}header .s{opacity:.9;font-size:13px;margin-top:5px}
+header h1{margin:0;font-size:22px;display:flex;align-items:center;gap:10px}header h1 img{width:34px;height:34px;border-radius:8px;object-fit:cover}header .s{opacity:.9;font-size:13px;margin-top:5px}
 .wrap{max-width:1000px;margin:0 auto;padding:20px 30px 60px}
 .bar{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin:6px 0 14px}
 #q{flex:1;min-width:220px;padding:10px 12px;border:1px solid var(--line);border-radius:8px;font-size:14px;background:var(--card);color:var(--ink)}
@@ -45,7 +45,7 @@ body.dark .et{background:#3b2f63;color:#c4b5fd;border-color:#4c3f7a}
 .gal img{width:100%;height:100px;object-fit:cover;border:1px solid var(--line);border-radius:6px;cursor:pointer;transition:.15s}.gal img:hover{transform:scale(1.03);box-shadow:0 2px 8px rgba(0,0,0,.15)}
 .count{color:var(--mut);font-size:13px}
 </style></head><body>
-<header><h1>📚 놓치면 안되는 정말 중요한 AI 지식정보사이트(KIS)</h1><button class="tgl" id="tgl">다크모드</button></header>
+<header><h1><img src="assets/yhj.png" alt="KIS"> 놓치면 안되는 정말 중요한 AI 지식정보사이트(KIS)</h1><button class="tgl" id="tgl">다크모드</button></header>
 <div class="wrap">
   <div class="bar"><input id="q" placeholder="🔍 제목·요약·태그 검색"><button type="button" class="tagbtn" id="tagBtn">🏷 태그 펼치기 (65)</button><span class="count" id="cnt"></span></div>
   <div class="tabs" id="tabs"><button type="button" class="tab" data-type="yt">YouTube<span class="tc">(10)</span></button><button type="button" class="tab" data-type="www">WWW<span class="tc">(2)</span></button><button type="button" class="tab" data-type="ev">Event<span class="tc">(1)</span></button><button type="button" class="tab" data-type="paper">Paper<span class="tc">(0)</span></button><button type="button" class="tab" data-type="news">News<span class="tc">(0)</span></button></div>
