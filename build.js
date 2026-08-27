@@ -109,7 +109,13 @@ const cardHtml = cards.map((c, i) => {
   if (hasYt) links.push(`<a class="lnk" href="${esc(c.fm.video)}" target="_blank">${YT}YouTube</a>`);
   if (hasWww) links.push(`<a class="lnk" href="${esc(c.fm.link)}" target="_blank">${WEB}WWW</a>`);
   if (hasEvt) links.push(`<a class="lnk" href="${esc(c.fm.event)}" target="_blank">${EVT}Event</a>`);
-  if (hasPaper) links.push(`<a class="lnk" href="${esc(c.fm.paper)}" target="_blank">${PAPER}Paper</a>`);
+  if (hasPaper) {
+    links.push(`<a class="lnk" href="${esc(c.fm.paper)}" target="_blank">${PAPER}Paper</a>`);
+    if (c.fm.paper.includes('arxiv.org')) {
+      const transUrl = c.fm.paper.replace('arxiv.org', 'ar5iv.org');
+      links.push(`<a class="lnk" href="${esc(transUrl)}" target="_blank">🌐 번역</a>`);
+    }
+  }
   if (hasNews) links.push(`<a class="lnk" href="${esc(c.fm.news)}" target="_blank">${NEWS}News</a>`);
   const vid = links.join('') || `<span class="muted">${esc(c.fm.video || '')}</span>`;
   const _ei = [];
