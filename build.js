@@ -76,11 +76,11 @@ const cards = files.map(f => {
 );
 const allTags = [...new Set(cards.flatMap(c => c.fm.tags || []))].sort();
 const TYPE_TABS = [
-  { key: 'yt', label: 'YouTube' },
-  { key: 'www', label: 'WWW' },
   { key: 'ev', label: 'Event' },
-  { key: 'paper', label: 'Paper' },
   { key: 'news', label: 'News' },
+  { key: 'www', label: 'WWW' },
+  { key: 'paper', label: 'Paper' },
+  { key: 'yt', label: 'YouTube' },
 ];
 const typeCount = k => cards.filter(c => {
   const hasYt = /^https?:/.test(c.fm.video || '');
