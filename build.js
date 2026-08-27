@@ -147,7 +147,11 @@ header h1{margin:0;font-size:22px}header .s{opacity:.9;font-size:13px;margin-top
 .wrap{max-width:1000px;margin:0 auto;padding:20px 30px 60px}
 .bar{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin:6px 0 14px}
 #q{flex:1;min-width:220px;padding:10px 12px;border:1px solid var(--line);border-radius:8px;font-size:14px;background:var(--card);color:var(--ink)}
-.chips{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px}
+.tagbtn{cursor:pointer;border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:8px;padding:10px 14px;font-size:13px;font-weight:700;white-space:nowrap}
+.tagbtn:hover{border-color:var(--blue);color:var(--blue)}
+.tagbtn.on{background:var(--blue);color:#fff;border-color:var(--blue)}
+.chips{display:none;gap:6px;flex-wrap:wrap;margin-bottom:14px}
+.chips.open{display:flex}
 .chip{padding:5px 11px;border:1px solid var(--line);border-radius:999px;font-size:12px;cursor:pointer;background:var(--card);color:var(--ink)}
 .chip.on{background:var(--blue);color:#fff;border-color:var(--blue)}
 .tabs{display:flex;gap:4px;flex-wrap:wrap;margin-bottom:14px;border-bottom:2px solid var(--line)}
@@ -181,7 +185,7 @@ body.dark .et{background:#3b2f63;color:#c4b5fd;border-color:#4c3f7a}
 </style></head><body>
 <header><h1>📚 ${SITE_TITLE}</h1><button class="tgl" id="tgl">다크모드</button></header>
 <div class="wrap">
-  <div class="bar"><input id="q" placeholder="🔍 제목·요약·태그 검색"><span class="count" id="cnt"></span></div>
+  <div class="bar"><input id="q" placeholder="🔍 제목·요약·태그 검색"><button type="button" class="tagbtn" id="tagBtn">🏷 태그 펼치기 (${allTags.length})</button><span class="count" id="cnt"></span></div>
   <div class="tabs" id="tabs">${TYPE_TABS.map(t => `<button type="button" class="tab" data-type="${t.key}">${t.label}<span class="tc">(${typeCount(t.key)})</span></button>`).join('')}</div>
   <div class="chips" id="chips">${allTags.map(t => `<span class="chip" data-tag="${esc(t)}">${esc(t)}</span>`).join('')}</div>
   <div id="list">${cardHtml || '<p class="muted">카드가 없습니다. cards/ 에 .md를 추가하고 node build.js 재실행.</p>'}</div>
@@ -191,6 +195,10 @@ const _tgl=document.getElementById('tgl');
 function _setTheme(d){document.body.classList.toggle('dark',d);_tgl.textContent=d?'라이트모드':'다크모드';}
 _setTheme(localStorage.getItem('kis-theme')==='dark');
 _tgl.onclick=()=>{const d=!document.body.classList.contains('dark');localStorage.setItem('kis-theme',d?'dark':'light');_setTheme(d);};
+const _tagBtn=document.getElementById('tagBtn'),_chips=document.getElementById('chips');
+function _setTagsOpen(o){_chips.classList.toggle('open',o);_tagBtn.classList.toggle('on',o);_tagBtn.textContent=(o?'🏷 태그 접기 (':'🏷 태그 펼치기 (')+${allTags.length}+')';}
+_setTagsOpen(localStorage.getItem('kis-tagsopen')==='1');
+_tagBtn.onclick=()=>{const o=!_chips.classList.contains('open');localStorage.setItem('kis-tagsopen',o?'1':'0');_setTagsOpen(o);};
 const cards=[...document.querySelectorAll('.card')]; const sel=new Set();
 let activeType=localStorage.getItem('kis-tab')||'${TYPE_TABS[0].key}';
 function apply(){const q=document.getElementById('q').value.toLowerCase().trim();let n=0;
@@ -202,7 +210,7 @@ function setTab(k){activeType=k;localStorage.setItem('kis-tab',k);
 document.getElementById('q').addEventListener('input',apply);
 document.querySelectorAll('#tabs .tab').forEach(b=>b.onclick=()=>setTab(b.dataset.type));
 document.querySelectorAll('#chips .chip').forEach(ch=>ch.onclick=()=>{const t=ch.dataset.tag;if(sel.has(t)){sel.delete(t);ch.classList.remove('on');}else{sel.add(t);ch.classList.add('on');}apply();});
-document.querySelectorAll('.card .tag').forEach(tg=>tg.onclick=e=>{e.stopPropagation();const t=tg.dataset.tag;const ch=[...document.querySelectorAll('#chips .chip')].find(c=>c.dataset.tag===t);if(ch)ch.click();});
+document.querySelectorAll('.card .tag').forEach(tg=>tg.onclick=e=>{e.stopPropagation();const t=tg.dataset.tag;const ch=[...document.querySelectorAll('#chips .chip')].find(c=>c.dataset.tag===t);if(ch){_setTagsOpen(true);localStorage.setItem('kis-tagsopen','1');ch.click();}});
 setTab(activeType);
 </script></body></html>`;
 fs.writeFileSync(path.join(__dirname, 'index.html'), html, 'utf8');
