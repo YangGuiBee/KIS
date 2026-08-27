@@ -14,7 +14,7 @@ const path = require('path');
 const https = require('https');
 const crypto = require('crypto');
 
-const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycby2MlftdHUblF9QzifxIyMbwOe4W-7EqS8EQySNBDqTVzFH4I-fiajehiheWlrih4Wp/exec';
+const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwgpUNaWOqH3Cb4Pl9y2VwLfoVbzeammArSCdFoFgyntAmTuR9oLLEfmIHPIODFwHN2HA/exec';
 const CARDS_DIR = path.join(__dirname, '..', 'cards');
 
 function fetchJsonp(url, redirectsLeft) {
@@ -63,7 +63,26 @@ function hash6(s) {
   return crypto.createHash('sha1').update(s).digest('hex').slice(0, 6);
 }
 
-function toCard(item) {
+// 2026-07-05 이전 수집분은 시트 컬럼 순서가 달라(레거시) title/authors/link/abstract가
+// 밀려서 들어있다 — link가 URL 형태가 아니면 레거시로 보고 제자리로 되돌린다.
+// (getNews()가 쓰는 최근 20건에는 영향 없어 paper.html에선 드러나지 않던 문제)
+function normalizeItem(item) {
+  if (/^https?:\/\//.test(item.link || '')) return item;
+  return {
+    collectedAt: item.collectedAt,
+    category: item.link,
+    title: item.category,
+    publishedAt: item.collectedAt,
+    authors: item.title,
+    source: item.source,
+    link: item.authors,
+    stars: item.stars,
+    abstract: item.publishedAt,
+  };
+}
+
+function toCard(rawItem) {
+  const item = normalizeItem(rawItem);
   const title = String(item.title || '').replace(/\r?\n/g, ' ').trim();
   const abstract = (item.abstract || '').trim();
   const summary = abstract ? abstract.slice(0, 300) : '(초록 없음 — 원문에서 직접 확인)';
@@ -96,7 +115,7 @@ async function main() {
   const url = `${SCRIPT_URL}?action=getAllNews`;
   const res = await fetchJsonp(url);
   if (!res.ok) throw new Error('getAllNews 실패: ' + (res.msg || JSON.stringify(res)));
-  const items = res.data || [];
+  const items = (res.data || []).map(normalizeItem);
   console.log(`  시트 전체 ${items.length}건`);
 
   console.log('[2/3] 이미 아카이브된 링크 확인...');
