@@ -2,3 +2,8 @@ node_modules/
 .DS_Store
 Thumbs.db
 *.log
+
+# KakaoTalk exports and local review artifacts may contain private chat logs,
+# nicknames, images, videos, and attachments. Never publish them to GitHub Pages.
+data/
+!data/.gitkeep
