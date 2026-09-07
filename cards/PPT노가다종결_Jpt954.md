@@ -1,7 +1,7 @@
 ---
 title: 파워포인트 없이 PPT 만들기 — 클로드 코드 + Flow 무료 이미지
 video: https://www.youtube.com/watch?v=Jpt954vPdPQ
-source: C:/ai-bok/ref/KM/PPT노가다 종결/아직도 파워포인트로 한땀한땀 PPT 만들면 진짜 손해입니다.txt
+source: C:/ai-dev/data/ref/KM/PPT노가다 종결/아직도 파워포인트로 한땀한땀 PPT 만들면 진짜 손해입니다.txt
 date: 2026-08-18
 tags: [클로드코드, PPT자동화, 바이브코딩, 이미지생성, Canva, 발표]
 summary: 파워포인트를 켜지 않고 클로드 코드에 "한국어로 채팅"만으로 17장 PPTX를 생성. 이미지는 Google Flow(나노바나 라이트=0크레딧)로 뽑아 작업폴더에 넣으면 클로드가 자동 반영. 개별 요소화로 만들어 Canva에서 미세수정. "예쁨이 아니라 전달이 목표".

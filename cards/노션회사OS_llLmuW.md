@@ -1,7 +1,7 @@
 ---
 title: AI 시대의 필수템, 노션 — 작은 회사의 운영체제(OS) 만들기 (공여사들)
 video: https://youtu.be/llLmuWhzh94
-source: C:/ai-bok/ref/KM/AI시대의 필수템_노션/전문스크립트.txt
+source: C:/ai-dev/data/ref/KM/AI시대의 필수템_노션/전문스크립트.txt
 date: 2026-08-19
 tags: [AI활용, 지식관리, 노션, 워크스페이스, 회의록, AX]
 summary: 작은 회사가 AI를 써도 일이 안 줄어드는 진짜 이유는 "AI가 참고할 회사 기억"을 안 만들어 놨기 때문. 노션을 회사 운영 워크스페이스(OS)로 삼아 회의록·회사 전용 AI·스킬로 데이터를 축적하는 방법.

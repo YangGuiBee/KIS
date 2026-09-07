@@ -1,7 +1,7 @@
 ---
 title: 정석강의 3강 — 모델과 도구 (누구나 AI 연구원이 되는 시대)
 video: https://youtu.be/JK1S6FvAdZQ
-source: C:/ai-bok/ref/KM/정석강의3강_모델과도구_전문스크립트.txt
+source: C:/ai-dev/data/ref/KM/정석강의3강_모델과도구_전문스크립트.txt
 date: 2026-08-24
 tags: [바이브코딩, AI모델, 허깅페이스, 스킬, AISaaS, 학습법]
 summary: 바이브코딩 정석강의 3강. "먼저 만들고 막히면서 공부한다"(페테르손식) 학습법으로, 파인드스킬(skills.sh)로 필요한 스킬을 찾고 허깅페이스에서 모델을 탐색해 '쇼츠 자동편집' MVP를 만들고, 결제·GPU 인프라 설계까지 AI SaaS화하는 과정을 시연.

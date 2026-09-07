@@ -1,7 +1,7 @@
 ---
 title: 최고의 과학자가 공개한 AI를 잘 쓰는 비법 (feat. 네이처)
 video: https://www.youtube.com/watch?v=MYJR76_EywI
-source: C:/ai-bok/ref/KM/AI를 잘 쓰는 과학자들의 비법/최고의 과학자가 공개한 AI를 잘 쓰는 최고의 비법들.txt
+source: C:/ai-dev/data/ref/KM/AI를 잘 쓰는 과학자들의 비법/최고의 과학자가 공개한 AI를 잘 쓰는 최고의 비법들.txt
 date: 2026-08-18
 tags: [AI활용, 프롬프트, 과학적사고, 검증, 무지어내기, 네이처]
 summary: 네이처 칼럼(밴더빌트대 데워 교수)+《AI 시대 어떻게 일할 것인가》 기반. "모든 프롬프트를 실험처럼, 모든 답변을 실험 결과처럼" 다루는 8가지 비법. 핵심은 프롬프트 기술이 아니라 과학적 사고와 검증 태도.

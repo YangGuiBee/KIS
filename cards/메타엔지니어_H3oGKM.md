@@ -1,7 +1,7 @@
 ---
 title: AI 시대, 메타 엔지니어는 이렇게 일합니다 (커리어 팁 12가지)
 video: https://www.youtube.com/watch?v=H3oGKM-pM_Q
-source: C:/ai-bok/ref/KM/메타 엔지니어의 팁/메타_전문자막_H3oGKM-pM_Q.txt
+source: C:/ai-dev/data/ref/KM/메타 엔지니어의 팁/메타_전문자막_H3oGKM-pM_Q.txt
 date: 2026-08-18
 tags: [AI커리어, 에이전틱엔지니어링, 테이스트, AX, 클로드코드, 실리콘밸리]
 summary: 메타 시니어 엔지니어가 클로드 코드 1년간 겪은 변화로 정리한 AI 시대 커리어 팁 12가지. 같은 AI를 써도 회사 안에서 이미 10~20배 격차. 에이전틱 엔지니어링·테이스트·70% 출시·직급/팀을 넘는 문제해결·상위 1% 로드맵까지.

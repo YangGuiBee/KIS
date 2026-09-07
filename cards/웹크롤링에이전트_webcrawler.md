@@ -1,7 +1,7 @@
 ---
 title: 웹 크롤링 에이전트 'web-crawler' — URL+수집항목만 말하면 AI가 정찰·수집·엑셀 출력
 link: https://github.com/byungjunjang/web-crawler
-source: C:/ai-bok/ref/KM/web-crawler_에이전트_소개영상_전문스크립트.txt
+source: C:/ai-dev/data/ref/KM/web-crawler_에이전트_소개영상_전문스크립트.txt
 date: 2026-08-31
 tags: [웹크롤링, 에이전트, 오픈소스, 데이터수집, 자동화, 스크레이핑]
 summary: 오픈소스(MIT) 범용 웹 크롤링 에이전트. 클로드 코드/ChatGPT에 URL과 "무엇을 수집"만 말하면, AI가 사이트를 정찰해 사이트별 수집 코드를 작성하고 대량 데이터를 엑셀·PDF·MD로 정리. 입찰·채용·뉴스·부동산·이커머스 리뷰·로그인 사이트까지 지원.

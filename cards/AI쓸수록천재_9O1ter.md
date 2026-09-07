@@ -1,7 +1,7 @@
 ---
 title: AI 쓸수록 똑똑해지는 사람의 6가지 특징 (독서연구소)
 video: https://youtu.be/9O1terlCTts
-source: C:/ai-bok/ref/KM/AI 쓸수록 천재되기/전문스크립트.txt
+source: C:/ai-dev/data/ref/KM/AI 쓸수록 천재되기/전문스크립트.txt
 date: 2026-08-19
 tags: [AI활용, 비판적사고, 메타인지, 인지부채, 프롬프트, 무지어내기]
 summary: 같은 AI를 써도 누군 똑똑해지고 누군 멍청해진다. MIT미디어랩·MS리서치·카네기멜런·하버드×BCG 실증연구 + 《AI, 신의 탄생 인간의 종말》《듀얼 브레인》을 종합해, AI를 쓸수록 지능이 올라가는 사람의 6가지 특징을 정리.

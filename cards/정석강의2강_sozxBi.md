@@ -1,7 +1,7 @@
 ---
 title: 정석강의 2강 — 자동화 대시보드 (설계·기획/PM)
 video: https://youtu.be/sozxBiyc3qQ
-source: C:/ai-bok/ref/KM/정석강의2강_자동화대시보드_전문스크립트.txt
+source: C:/ai-dev/data/ref/KM/정석강의2강_자동화대시보드_전문스크립트.txt
 date: 2026-08-20
 tags: [바이브코딩, 대시보드, 설계, API명세, 배치, 배포]
 summary: 정석강의 2강(약 2h35m). 대시보드 전문 PM(7년)이 "데모까지는 금방 나오지만 그 이후가 고질적으로 어려운" 자동화 대시보드를, 문제정의→데이터→정보구조→시스템/API/배치/IF 명세→UI→배포의 6단계로 설계하는 실전.

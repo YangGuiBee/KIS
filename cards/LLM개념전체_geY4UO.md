@@ -1,7 +1,7 @@
 ---
 title: LLM의 모든 개념 — 신경망 학습부터 추론 원리 전체 (AX 강의 4강)
 video: https://youtu.be/geY4UO23QA8
-source: C:/ai-bok/ref/KM/LLM개념_학습추론_전문스크립트.txt
+source: C:/ai-dev/data/ref/KM/LLM개념_학습추론_전문스크립트.txt
 date: 2026-08-28
 tags: [LLM, 트랜스포머, 어텐션, 파인튜닝, RAG, 프롬프트, AX]
 summary: AX 컨설턴트 대상 LLM 리터러시 강의(약 1h35m). ①모델이 학습되는 전 과정(코퍼스→토큰→프리트레인/포스트트레인) ②추론 과정(임베딩→트랜스포머/어텐션→샘플링) ③"프롬프트 vs RAG vs 파인튜닝"을 언제 쓰는지 판단 기준을 원리로 설명.

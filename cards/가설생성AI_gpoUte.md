@@ -1,7 +1,7 @@
 ---
 title: 논문만 쓰는 AI에서 가설 만드는 AI로 (안될과학 · 유용균 센터장)
 video: https://youtu.be/gpoUteMGtdY
-source: C:/ai-bok/ref/KM/논문AI에서_가설생성AI_안될과학.txt
+source: C:/ai-dev/data/ref/KM/논문AI에서_가설생성AI_안될과학.txt
 date: 2026-08-24
 tags: [AI활용, 과학AI, 가설생성, 연구자동화, AI윤리, 논문리뷰]
 summary: 안될과학 인터뷰(국가과학인공지능연구센터 NAIS 유용균 센터장). 제프 딘의 과학AI 행보를 계기로, AI가 '논문 쓰는 도구'에서 '가설을 생성하고 연구 전 과정을 자동화하는 지능'으로 옮겨가는 흐름과 그 한계(그럴듯한 가설·reward hacking·리뷰 윤리)를 짚음.
