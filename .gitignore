@@ -7,3 +7,6 @@ Thumbs.db
 # nicknames, images, videos, and attachments. Never publish them to GitHub Pages.
 data/
 !data/.gitkeep
+
+# scripts = local junction → C:\ai-bok\scripts (KIS 카드의 ../scripts 상대경로용). 커밋 금지.
+scripts/
