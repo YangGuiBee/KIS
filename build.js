@@ -81,6 +81,16 @@ const TYPE_TABS = [
   { key: 'www', label: 'WWW' },
   { key: 'paper', label: 'Paper' },
   { key: 'yt', label: 'YouTube' },
+  { key: 'book', label: 'Book' },
+];
+// "자료출처" 모달에 쓰는 설명 — 실제 tools/*.js·workflows 동작을 그대로 서술(지어내지 않음).
+const TYPE_RULES = [
+  { icon: '📅', label: 'Event', desc: '수동 등록. frontmatter의 <code>event:</code>(신청/공식 링크)를 채우면 Event 탭에 표시됩니다. <code>etype</code>(유형)·<code>edate</code>(일시)·<code>eplace</code>(장소)·<code>efee</code>(비용)·<code>ehost</code>(주최)·<code>edeadline</code>(마감)으로 세부정보를 추가할 수 있습니다.' },
+  { icon: '📰', label: 'News', desc: '두 갈래입니다. ① 자동수집 — <code>tools/sync-news.js</code>가 GitHub Actions로 매일 AI 전문매체 RSS 10곳(인공지능신문·바이라인네트워크·VentureBeat AI·MIT Technology Review·AI타임스·전자신문·ZDNet Korea·TechCrunch·The Verge·Ars Technica)을 확인해 신규 기사만 카드화하며, 제목 앞에 <b>[auto]</b>가 붙습니다. ② 수동 등록 — 직접 추가한 뉴스는 [auto] 표시 없이 <code>news:</code> 필드만 채웁니다.' },
+  { icon: '🌐', label: 'WWW', desc: '수동 등록. frontmatter <code>link:</code>에 URL을 넣으면 WWW 탭에 표시됩니다.' },
+  { icon: '📄', label: 'Paper', desc: '전량 자동수집. <code>tools/sync-papers.js</code>가 GitHub Actions로 매일 AI Study(paper.html)의 논문수집 결과(Papers With Code·Semantic Scholar·OpenReview·arXiv 4곳)를 받아와 영구 아카이브합니다. 수동 등록분은 없습니다.' },
+  { icon: '▶️', label: 'YouTube', desc: '반자동. <code>node tools/new-card.js &lt;영상URL&gt;</code>이 자막을 내려받아 카드 스켈레톤을 만들지만, 핵심 키포인트·요약은 반드시 사람이 스크립트를 읽고 직접 채웁니다(무-지어내기 원칙 — 자동 요약 없음).' },
+  { icon: '📚', label: 'Book', desc: '수동 등록. frontmatter <code>book:</code>에 링크를 넣으면 Book 탭에 표시됩니다.' },
 ];
 const typeCount = k => cards.filter(c => {
   const hasYt = /^https?:/.test(c.fm.video || '');
@@ -88,7 +98,8 @@ const typeCount = k => cards.filter(c => {
   const hasEvt = /^https?:/.test(c.fm.event || '');
   const hasPaper = /^https?:/.test(c.fm.paper || '');
   const hasNews = /^https?:/.test(c.fm.news || '');
-  const t = hasYt ? 'yt' : hasWww ? 'www' : hasEvt ? 'ev' : hasPaper ? 'paper' : hasNews ? 'news' : 'etc';
+  const hasBook = /^https?:/.test(c.fm.book || '');
+  const t = hasYt ? 'yt' : hasWww ? 'www' : hasEvt ? 'ev' : hasPaper ? 'paper' : hasNews ? 'news' : hasBook ? 'book' : 'etc';
   return t === k;
 }).length;
 
@@ -99,12 +110,14 @@ const cardHtml = cards.map((c, i) => {
   const EVT = '<svg class="ci" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4.5" width="18" height="16" rx="2" fill="none" stroke="#7c3aed" stroke-width="1.7"/><path d="M3 9h18M8 3v3M16 3v3" stroke="#7c3aed" stroke-width="1.7" fill="none" stroke-linecap="round"/></svg>';
   const PAPER = '<svg class="ci" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 2.8h9l4 4V21a.6.6 0 0 1-.6.6H6A.6.6 0 0 1 5.4 21V3.4A.6.6 0 0 1 6 2.8z" fill="none" stroke="#16a34a" stroke-width="1.7"/><path d="M14.6 2.8V7h4.2M8.2 12h7.6M8.2 15.4h7.6M8.2 18.8h4.6" stroke="#16a34a" stroke-width="1.5" fill="none" stroke-linecap="round"/></svg>';
   const NEWS = '<svg class="ci" viewBox="0 0 24 24" aria-hidden="true"><rect x="2.8" y="5.2" width="15.6" height="14" rx="1.2" fill="none" stroke="#ea580c" stroke-width="1.7"/><path d="M18.4 8.6h2.2a.6.6 0 0 1 .6.6v9.2a1.6 1.6 0 0 1-1.6 1.6H6" stroke="#ea580c" stroke-width="1.7" fill="none" stroke-linecap="round"/><path d="M5.6 8.6h6.4v4H5.6zM5.6 14.6h9.2M5.6 17h9.2" stroke="#ea580c" stroke-width="1.4" fill="none" stroke-linecap="round"/></svg>';
+  const BOOK = '<svg class="ci" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 6.5c-1.8-1.3-4.2-1.8-6.5-1.3a1 1 0 0 0-.8 1V17a1 1 0 0 0 1.2 1c2-.4 4.1 0 5.7 1.1V6.5zM12 6.5c1.8-1.3 4.2-1.8 6.5-1.3a1 1 0 0 1 .8 1V17a1 1 0 0 1-1.2 1c-2-.4-4.1 0-5.7 1.1V6.5z" fill="none" stroke="#4f46e5" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>';
   const hasYt = /^https?:/.test(c.fm.video || '');
   const hasWww = /^https?:/.test(c.fm.link || '');
   const hasEvt = /^https?:/.test(c.fm.event || '');
   const hasPaper = /^https?:/.test(c.fm.paper || '');
   const hasNews = /^https?:/.test(c.fm.news || '');
-  const type = hasYt ? 'yt' : hasWww ? 'www' : hasEvt ? 'ev' : hasPaper ? 'paper' : hasNews ? 'news' : 'etc';
+  const hasBook = /^https?:/.test(c.fm.book || '');
+  const type = hasYt ? 'yt' : hasWww ? 'www' : hasEvt ? 'ev' : hasPaper ? 'paper' : hasNews ? 'news' : hasBook ? 'book' : 'etc';
   const links = [];
   if (hasYt) links.push(`<a class="lnk" href="${esc(c.fm.video)}" target="_blank">${YT}YouTube</a>`);
   if (hasWww) links.push(`<a class="lnk" href="${esc(c.fm.link)}" target="_blank">${WEB}WWW</a>`);
@@ -117,6 +130,7 @@ const cardHtml = cards.map((c, i) => {
     }
   }
   if (hasNews) links.push(`<a class="lnk" href="${esc(c.fm.news)}" target="_blank">${NEWS}News</a>`);
+  if (hasBook) links.push(`<a class="lnk" href="${esc(c.fm.book)}" target="_blank">${BOOK}Book</a>`);
   const vid = links.join('') || `<span class="muted">${esc(c.fm.video || '')}</span>`;
   const _ei = [];
   if (c.fm.edate) _ei.push(`<b>일시</b> ${esc(c.fm.edate)}`);
@@ -188,8 +202,23 @@ body.dark .et{background:#3b2f63;color:#c4b5fd;border-color:#4c3f7a}
 .gal{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px;margin:8px 0 4px}
 .gal img{width:100%;height:100px;object-fit:cover;border:1px solid var(--line);border-radius:6px;cursor:pointer;transition:.15s}.gal img:hover{transform:scale(1.03);box-shadow:0 2px 8px rgba(0,0,0,.15)}
 .count{color:var(--mut);font-size:13px}
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(15,23,42,.55);z-index:50;align-items:center;justify-content:center;padding:20px}
+.modal-overlay.open{display:flex}
+.modal-box{background:var(--card);color:var(--ink);border-radius:14px;max-width:620px;width:100%;max-height:82vh;overflow-y:auto;padding:22px 24px}
+.modal-box h2{margin:0 0 14px;font-size:18px}
+.src-item{border-top:1px solid var(--line);padding:12px 0}
+.src-item:first-of-type{border-top:none}
+.src-item h3{margin:0 0 4px;font-size:14px;display:flex;align-items:center;gap:6px}
+.src-item p{margin:0;font-size:13px;color:var(--mut);line-height:1.6}
+.modal-close{margin-top:18px;cursor:pointer;border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:8px;padding:9px 18px;font-size:13px;font-weight:700}
+.modal-close:hover{border-color:var(--blue);color:var(--blue)}
 </style></head><body>
-<header><h1><img src="assets/yhj.png" alt="KIS"> ${SITE_TITLE}</h1><button class="tgl" id="tgl">다크모드</button></header>
+<header><h1><img src="assets/yhj.png" alt="KIS"> ${SITE_TITLE}</h1><div style="display:flex;gap:8px"><button class="tgl" id="srcBtn">자료출처</button><button class="tgl" id="tgl">다크모드</button></div></header>
+<div class="modal-overlay" id="srcModal"><div class="modal-box">
+  <h2>자료출처 — 탭별 카드 생성규칙</h2>
+  ${TYPE_RULES.map(r => `<div class="src-item"><h3>${r.icon} ${r.label}</h3><p>${r.desc}</p></div>`).join('')}
+  <button type="button" class="modal-close" id="srcClose">닫기</button>
+</div></div>
 <div class="wrap">
   <div class="bar"><input id="q" placeholder="🔍 제목·요약·태그 검색"><button type="button" class="tagbtn" id="tagBtn">🏷 태그 펼치기 (${allTags.length})</button><span class="count" id="cnt"></span></div>
   <div class="tabs" id="tabs">${TYPE_TABS.map(t => `<button type="button" class="tab" data-type="${t.key}">${t.label}<span class="tc">(${typeCount(t.key)})</span></button>`).join('')}</div>
@@ -201,6 +230,9 @@ const _tgl=document.getElementById('tgl');
 function _setTheme(d){document.body.classList.toggle('dark',d);_tgl.textContent=d?'라이트모드':'다크모드';}
 _setTheme(localStorage.getItem('kis-theme')==='dark');
 _tgl.onclick=()=>{const d=!document.body.classList.contains('dark');localStorage.setItem('kis-theme',d?'dark':'light');_setTheme(d);};
+const _srcBtn=document.getElementById('srcBtn'),_srcModal=document.getElementById('srcModal'),_srcClose=document.getElementById('srcClose');
+_srcBtn.onclick=()=>_srcModal.classList.add('open');
+_srcClose.onclick=()=>_srcModal.classList.remove('open');
 const _tagBtn=document.getElementById('tagBtn'),_chips=document.getElementById('chips');
 function _setTagsOpen(o){_chips.classList.toggle('open',o);_tagBtn.classList.toggle('on',o);_tagBtn.textContent=(o?'🏷 태그 접기 (':'🏷 태그 펼치기 (')+${allTags.length}+')';}
 _setTagsOpen(localStorage.getItem('kis-tagsopen')==='1');
