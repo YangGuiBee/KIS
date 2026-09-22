@@ -1,0 +1,49 @@
+name: KIS daily news sync
+
+# 매일 AI 전문매체 RSS 10곳을 직접 구독해 신규 기사만 cards/*.md(news:)로
+# 아카이브하고 index.html을 재빌드한다. Paper 동기화(08:00 KST)와 시차를 두어
+# 07:00 KST에 실행한다.
+
+on:
+  schedule:
+    - cron: '0 22 * * *' # 매일 07:00 KST (UTC 전날 22:00) — Paper 동기화(08:00)와 1시간 시차
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Sync new news into cards/
+        run: node tools/sync-news.js
+
+      - name: Rebuild index.html
+        run: node build.js
+
+      - name: Check for changes
+        id: diff
+        run: |
+          if git diff --quiet -- cards/ index.html; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Commit and push
+        if: steps.diff.outputs.changed == 'true'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add cards/ index.html
+          git commit -m "KIS: 뉴스 카드 자동 동기화 $(date +%Y-%m-%d)"
+          git push origin main

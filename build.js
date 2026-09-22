@@ -95,12 +95,12 @@ const TYPE_TABS = [
 ];
 // "자료출처" 모달에 쓰는 설명 — 실제 tools/*.js·workflows 동작을 그대로 서술(지어내지 않음).
 const TYPE_RULES = [
-  { icon: '📅', label: 'Event', desc: '수동 등록. frontmatter의 <code>event:</code>(신청/공식 링크)를 채우면 Event 탭에 표시됩니다. <code>etype</code>(유형)·<code>edate</code>(일시)·<code>eplace</code>(장소)·<code>efee</code>(비용)·<code>ehost</code>(주최)·<code>edeadline</code>(마감)으로 세부정보를 추가할 수 있습니다.' },
-  { icon: '📰', label: 'News', desc: '두 갈래입니다. ① 자동수집 — <code>tools/sync-news.js</code>가 GitHub Actions로 매일 AI 전문매체 RSS 10곳(인공지능신문·바이라인네트워크·VentureBeat AI·MIT Technology Review·AI타임스·전자신문·ZDNet Korea·TechCrunch·The Verge·Ars Technica)을 확인해 신규 기사만 카드화하며, 제목 앞에 <b>[auto]</b>가 붙습니다. ② 수동 등록 — 직접 추가한 뉴스는 [auto] 표시 없이 <code>news:</code> 필드만 채웁니다.' },
-  { icon: '🌐', label: 'WWW', desc: '수동 등록. frontmatter <code>link:</code>에 URL을 넣으면 WWW 탭에 표시됩니다.' },
-  { icon: '📄', label: 'Paper', desc: '전량 자동수집. <code>tools/sync-papers.js</code>가 GitHub Actions로 매일 AI Study(paper.html)의 논문수집 결과(Papers With Code·Semantic Scholar·OpenReview·arXiv 4곳)를 받아와 영구 아카이브합니다. 수동 등록분은 없습니다.' },
-  { icon: '▶️', label: 'YouTube', desc: '반자동. <code>node tools/new-card.js &lt;영상URL&gt;</code>이 자막을 내려받아 카드 스켈레톤을 만들지만, 핵심 키포인트·요약은 반드시 사람이 스크립트를 읽고 직접 채웁니다(무-지어내기 원칙 — 자동 요약 없음).' },
-  { icon: '📚', label: 'Report', desc: '수동 등록. frontmatter <code>book:</code>에 링크를 넣으면 Report 탭에 표시됩니다.' },
+  { icon: '📅', label: 'Event', desc: '관리자 수동 등록' },
+  { icon: '📰', label: 'News', desc: '① 자동수집 — 매일 07시경 AI 전문매체 RSS 10곳(인공지능신문·바이라인네트워크·VentureBeat AI·MIT Technology Review·AI타임스·전자신문·ZDNet Korea·TechCrunch·The Verge·Ars Technica)을 확인해 신규 기사만 카드화하여 자동 수집 및 저장 : <b>[auto]</b> 표시<br>② 수동 등록 — 관리자 수동 등록 : [auto] 표시 생략' },
+  { icon: '🌐', label: 'WWW', desc: '관리자 수동 등록' },
+  { icon: '📄', label: 'Paper', desc: '매일 08시경 <a href="https://yangguibee.github.io/paper.html" target="_blank">https://yangguibee.github.io/paper.html</a>의 논문 수집결과를 자동 수집 및 저장' },
+  { icon: '▶️', label: 'YouTube', desc: '관리자 수동 등록' },
+  { icon: '📚', label: 'Report', desc: '관리자 수동 등록' },
 ];
 const typeCount = k => cards.filter(c => {
   const hasYt = /^https?:/.test(c.fm.video || '');
