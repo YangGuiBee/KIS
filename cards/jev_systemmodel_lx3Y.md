@@ -1,7 +1,6 @@
 ---
 title: "LLM과 다른 모델, JEV — 구조화된 단답으로 빠르고 저렴하게 판단하는 '시스템 모델'"
 video: https://youtu.be/lx3YkhzM_04
-source: https://youtu.be/lx3YkhzM_04
 date: 2026-09-19
 tags: [JEV, LLM, 시스템모델, TypeSafe, 구조화출력, AI모델, 실시간판단]
 summary: TypeSafe가 만든 JEV(제부)는 자연어로 길게 응답하는 LLM과 달리 판단을 수치·구조화된 단답 형태로 내놓는 '시스템 모델'로, 소프트웨어 부품 간 연결에 그대로 쓰기 적합하다. 정확도는 그럭저럭이지만 매우 빠르고 비용이 저렴해 실시간 판단이 필요한 곳에 강점을 보인다고 영상은 설명한다.

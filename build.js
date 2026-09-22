@@ -33,8 +33,17 @@ function parse(md) {
 }
 const VAULT_KIS_NOTES = 'C:/AX/obsidian/Raw/9.프로젝트(KIS)';
 function renderBody(b) { // 가벼운 md→html
-  const out = []; let inUl = false;
+  const out = []; let inUl = false; let imgRun = [];
+  const flushImg = () => { // 연속된 이미지 줄을 한 행(imgrow)으로 묶어 나란히 배치
+    if (!imgRun.length) return;
+    out.push('<div class="imgrow">' + imgRun.join('') + '</div>');
+    imgRun = [];
+  };
   for (let line of b.split(/\r?\n/)) {
+    // 이미지 문법: ![alt](url) — 한 줄에 하나. 연속되면 나란히.
+    const im = line.trim().match(/^!\[([^\]]*)\]\(([^)]+)\)$/);
+    if (im) { if (inUl) { out.push('</ul>'); inUl = false; } imgRun.push(`<a href="${enc(im[2])}" target="_blank"><img loading="lazy" src="${enc(im[2])}" alt="${esc(im[1])}"></a>`); continue; }
+    flushImg();
     line = line.replace(/\[\[([^\]]+)\]\]/g, (_, x) => `<a class="wl" href="${enc(VAULT_KIS_NOTES + '/' + x + '.md')}" target="_blank">${esc(x)}</a>`);
     line = esc(line).replace(/&lt;a class="wl" href="([^"]*)" target="_blank"&gt;/g, '<a class="wl" href="$1" target="_blank">').replace(/&lt;\/a&gt;/g, '</a>');
     line = line.replace(/\*\*(.+?)\*\*/g, '<b>$1</b>').replace(/\[(\d{1,2}:\d{2})\]/g, '<code class="ts">[$1]</code>');
@@ -43,6 +52,7 @@ function renderBody(b) { // 가벼운 md→html
     else if (line.trim() === '') { if (inUl) { out.push('</ul>'); inUl = false; } }
     else out.push(`<p>${line}</p>`);
   }
+  flushImg();
   if (inUl) out.push('</ul>');
   return out.join('\n');
 }
@@ -203,6 +213,10 @@ body.dark .et{background:#3b2f63;color:#c4b5fd;border-color:#4c3f7a}
 .muted{color:var(--mut)}.src{margin-top:12px;font-size:12px;word-break:break-all}.src a{color:var(--blue);font-weight:700;text-decoration:none}
 .gal{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px;margin:8px 0 4px}
 .gal img{width:100%;height:100px;object-fit:cover;border:1px solid var(--line);border-radius:6px;cursor:pointer;transition:.15s}.gal img:hover{transform:scale(1.03);box-shadow:0 2px 8px rgba(0,0,0,.15)}
+.imgrow{display:flex;gap:10px;margin:10px 0 14px;flex-wrap:wrap}
+.imgrow a{flex:1 1 0;min-width:180px}
+.imgrow img{width:100%;border:1px solid var(--line);border-radius:8px;cursor:pointer}
+@media(max-width:600px){.imgrow{flex-direction:column}}
 .count{color:var(--mut);font-size:13px}
 .modal-overlay{display:none;position:fixed;inset:0;background:rgba(15,23,42,.55);z-index:50;align-items:center;justify-content:center;padding:20px}
 .modal-overlay.open{display:flex}
