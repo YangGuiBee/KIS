@@ -81,7 +81,7 @@ const TYPE_TABS = [
   { key: 'www', label: 'WWW' },
   { key: 'paper', label: 'Paper' },
   { key: 'yt', label: 'YouTube' },
-  { key: 'book', label: 'Book' },
+  { key: 'book', label: 'Report' },
 ];
 // "자료출처" 모달에 쓰는 설명 — 실제 tools/*.js·workflows 동작을 그대로 서술(지어내지 않음).
 const TYPE_RULES = [
@@ -90,7 +90,7 @@ const TYPE_RULES = [
   { icon: '🌐', label: 'WWW', desc: '수동 등록. frontmatter <code>link:</code>에 URL을 넣으면 WWW 탭에 표시됩니다.' },
   { icon: '📄', label: 'Paper', desc: '전량 자동수집. <code>tools/sync-papers.js</code>가 GitHub Actions로 매일 AI Study(paper.html)의 논문수집 결과(Papers With Code·Semantic Scholar·OpenReview·arXiv 4곳)를 받아와 영구 아카이브합니다. 수동 등록분은 없습니다.' },
   { icon: '▶️', label: 'YouTube', desc: '반자동. <code>node tools/new-card.js &lt;영상URL&gt;</code>이 자막을 내려받아 카드 스켈레톤을 만들지만, 핵심 키포인트·요약은 반드시 사람이 스크립트를 읽고 직접 채웁니다(무-지어내기 원칙 — 자동 요약 없음).' },
-  { icon: '📚', label: 'Book', desc: '수동 등록. frontmatter <code>book:</code>에 링크를 넣으면 Book 탭에 표시됩니다.' },
+  { icon: '📚', label: 'Report', desc: '수동 등록. frontmatter <code>book:</code>에 링크를 넣으면 Report 탭에 표시됩니다.' },
 ];
 const typeCount = k => cards.filter(c => {
   const hasYt = /^https?:/.test(c.fm.video || '');
@@ -98,7 +98,7 @@ const typeCount = k => cards.filter(c => {
   const hasEvt = /^https?:/.test(c.fm.event || '');
   const hasPaper = /^https?:/.test(c.fm.paper || '');
   const hasNews = /^https?:/.test(c.fm.news || '');
-  const hasBook = /^https?:/.test(c.fm.book || '');
+  const hasBook = !!(c.fm.book || '').trim();
   const t = hasYt ? 'yt' : hasWww ? 'www' : hasEvt ? 'ev' : hasPaper ? 'paper' : hasNews ? 'news' : hasBook ? 'book' : 'etc';
   return t === k;
 }).length;
@@ -116,7 +116,7 @@ const cardHtml = cards.map((c, i) => {
   const hasEvt = /^https?:/.test(c.fm.event || '');
   const hasPaper = /^https?:/.test(c.fm.paper || '');
   const hasNews = /^https?:/.test(c.fm.news || '');
-  const hasBook = /^https?:/.test(c.fm.book || '');
+  const hasBook = !!(c.fm.book || '').trim();
   const type = hasYt ? 'yt' : hasWww ? 'www' : hasEvt ? 'ev' : hasPaper ? 'paper' : hasNews ? 'news' : hasBook ? 'book' : 'etc';
   const links = [];
   if (hasYt) links.push(`<a class="lnk" href="${esc(c.fm.video)}" target="_blank">${YT}YouTube</a>`);
@@ -130,7 +130,7 @@ const cardHtml = cards.map((c, i) => {
     }
   }
   if (hasNews) links.push(`<a class="lnk" href="${esc(c.fm.news)}" target="_blank">${NEWS}News</a>`);
-  if (hasBook) links.push(`<a class="lnk" href="${esc(c.fm.book)}" target="_blank">${BOOK}Book</a>`);
+  if (hasBook) links.push(`<a class="lnk" href="${esc(c.fm.book)}" target="_blank">${BOOK}Report</a>`);
   const vid = links.join('') || `<span class="muted">${esc(c.fm.video || '')}</span>`;
   const _ei = [];
   if (c.fm.edate) _ei.push(`<b>일시</b> ${esc(c.fm.edate)}`);
