@@ -140,7 +140,9 @@ const cardHtml = cards.map((c, i) => {
   if (c.fm.edeadline) _ei.push(`<b>마감</b> ${esc(c.fm.edeadline)}`);
   const evtInfo = (c.fm.etype || _ei.length)
     ? `<div class="evt">${c.fm.etype ? `<span class="et">${esc(c.fm.etype)}</span>` : ''}<span class="ei">${_ei.join(' · ')}</span></div>` : '';
-  const srcLink = c.fm.source ? `<a href="${srcHref(c.fm.source)}" target="_blank">📄 스크립트 전문</a>` : '';
+  // 유튜브 카드(video 필드)는 하단 '스크립트 전문' 링크 생략 — 상단 썸네일로 이미 영상 재생되고, 자막 전문 노출은 저작권 이슈
+  const isYtCard = /^https?:/.test(c.fm.video || '');
+  const srcLink = (c.fm.source && !isYtCard) ? `<a href="${srcHref(c.fm.source)}" target="_blank">📄 스크립트 전문</a>` : '';
   let gallery = '';
   if (c.fm.images && fs.existsSync(c.fm.images)) {
     const imgs = fs.readdirSync(c.fm.images).filter(f => /\.(png|jpe?g)$/i.test(f)).sort();
