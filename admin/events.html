@@ -3,22 +3,35 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>KIS Event Admin</title>
+  <title>KIS Admin Console</title>
   <style>
-    :root{--ink:#172033;--mut:#667085;--line:#d9e2ec;--bg:#f7fafc;--card:#fff;--blue:#2563eb;--teal:#0f766e;--red:#dc2626}
+    :root{--ink:#172033;--mut:#667085;--line:#d9e2ec;--bg:#f7fafc;--card:#fff;--blue:#2563eb;--teal:#0f766e;--red:#dc2626;--green:#15803d}
     *{box-sizing:border-box}
     body{margin:0;background:var(--bg);color:var(--ink);font-family:'Malgun Gothic','맑은 고딕',Arial,sans-serif}
-    header{background:linear-gradient(135deg,#0f766e,#0891b2);color:white;padding:22px 28px;display:flex;align-items:center;justify-content:space-between;gap:14px}
+    header{background:linear-gradient(135deg,#0f766e,#0891b2);color:white;padding:20px 28px;display:flex;align-items:center;justify-content:space-between;gap:14px}
     h1{font-size:24px;margin:0}
-    .home{color:white;text-decoration:none;border:1px solid rgba(255,255,255,.55);border-radius:999px;padding:9px 14px;font-weight:700}
-    main{max-width:1120px;margin:0 auto;padding:24px 28px 56px}
-    .toolbar{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:16px}
-    input,select{height:42px;border:1px solid var(--line);background:white;color:var(--ink);border-radius:8px;padding:0 12px;font-size:15px}
-    input{flex:1;min-width:260px}
+    .head-actions{display:flex;gap:8px;flex-wrap:wrap}
+    .head-actions a,.head-actions button{color:white;text-decoration:none;border:1px solid rgba(255,255,255,.55);border-radius:999px;padding:9px 14px;font-weight:700;background:rgba(255,255,255,.08);height:auto}
+    main{max-width:1160px;margin:0 auto;padding:22px 28px 56px}
     button{height:38px;border:1px solid var(--line);border-radius:8px;background:white;color:var(--ink);font-weight:700;cursor:pointer;padding:0 12px}
     button:hover{border-color:var(--blue);color:var(--blue)}
-    .count{color:var(--mut);font-weight:700;margin-left:auto}
+    input,select{height:42px;border:1px solid var(--line);background:white;color:var(--ink);border-radius:8px;padding:0 12px;font-size:15px}
+    input{flex:1;min-width:260px}
+    .login-wrap{min-height:calc(100vh - 80px);display:grid;place-items:center;padding:28px}
+    .login-card{width:min(440px,100%);background:white;border:1px solid var(--line);border-radius:8px;padding:24px;box-shadow:0 16px 40px rgba(15,23,42,.12)}
+    .login-card h2{margin:0 0 8px;font-size:22px}
+    .login-card p{color:var(--mut);line-height:1.55;margin:0 0 18px}
+    .login-card label{display:block;font-weight:800;margin:14px 0 6px}
+    .login-card input{width:100%;min-width:0}
+    .login-card .primary{width:100%;margin-top:16px;height:42px}
+    .hint{font-size:12px;color:var(--mut);margin-top:12px;line-height:1.5}
     .notice{border:1px solid #bfdbfe;background:#eff6ff;color:#1e3a8a;border-radius:8px;padding:12px 14px;margin-bottom:16px;line-height:1.55}
+    .warn{border-color:#fed7aa;background:#fff7ed;color:#9a3412}
+    .tabs{display:flex;gap:4px;flex-wrap:wrap;border-bottom:2px solid var(--line);margin:8px 0 16px}
+    .tab{height:44px;border:none;border-bottom:3px solid transparent;border-radius:0;background:transparent;color:var(--mut);font-size:15px;padding:0 15px}
+    .tab.on{border-bottom-color:var(--blue);color:var(--blue)}
+    .toolbar{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:16px}
+    .count{color:var(--mut);font-weight:700;margin-left:auto}
     .grid{display:grid;gap:12px}
     .card{background:var(--card);border:1px solid var(--line);border-left:4px solid #38bdf8;border-radius:8px;padding:16px}
     .top{display:flex;justify-content:space-between;gap:12px;align-items:flex-start}
@@ -32,41 +45,146 @@
     .primary{background:var(--blue);border-color:var(--blue);color:white}
     .primary:hover{background:#1d4ed8;color:white}
     .danger{color:var(--red)}
+    .ok{color:var(--green)}
     a{color:var(--blue);text-decoration:none;font-weight:700}
     a:hover{text-decoration:underline}
-    .empty{background:white;border:1px dashed var(--line);border-radius:8px;padding:32px;text-align:center;color:var(--mut)}
+    .empty,.panel{background:white;border:1px dashed var(--line);border-radius:8px;padding:28px;color:var(--mut);line-height:1.65}
+    .panel{border-style:solid}
+    .panel h2{font-size:20px;margin:0 0 8px;color:var(--ink)}
+    .panel ul{margin:10px 0 0;padding-left:20px}
     .error{background:#fef2f2;border:1px solid #fecaca;color:#991b1b;border-radius:8px;padding:16px;line-height:1.55}
-    @media(max-width:700px){header{align-items:flex-start;flex-direction:column}.top{flex-direction:column}.count{margin-left:0}}
+    .hidden{display:none!important}
+    @media(max-width:760px){header{align-items:flex-start;flex-direction:column}.top{flex-direction:column}.count{margin-left:0}.tabs{overflow:auto;flex-wrap:nowrap}.tab{white-space:nowrap}}
   </style>
 </head>
 <body>
-  <header>
-    <h1>KIS Event 관리자 검토</h1>
-    <a class="home" href="../index.html">KIS로 돌아가기</a>
-  </header>
-  <main>
-    <div class="notice">
-      이 화면은 로컬 관리자 검토용입니다. 승인 전 후보는 공개 Event 탭에 표시되지 않습니다.
-      게시하려면 후보의 승인 명령을 PowerShell에서 실행한 뒤 <code>node build.js</code>를 실행하세요.
-    </div>
-    <div class="toolbar">
-      <input id="q" type="search" placeholder="제목, 출처, 유형 검색">
-      <select id="source"><option value="">전체 출처</option></select>
-      <button id="reload" type="button">새로고침</button>
-      <span class="count" id="count">0건</span>
-    </div>
-    <section class="grid" id="list"></section>
-  </main>
+  <section class="login-wrap" id="loginView">
+    <form class="login-card" id="loginForm">
+      <h2>KIS 관리자 로그인</h2>
+      <p>로컬 검토용 임시 로그인입니다. 실제 공개 사이트용 보안 로그인은 백엔드/API 단계에서 붙입니다.</p>
+      <label for="adminId">관리자 ID</label>
+      <input id="adminId" autocomplete="username" value="admin">
+      <label for="adminPin">PIN</label>
+      <input id="adminPin" type="password" autocomplete="current-password" placeholder="kis-admin">
+      <button class="primary" type="submit">로그인</button>
+      <div class="hint">기본 PIN: <code>kis-admin</code>. 브라우저 로컬 저장소에만 로그인 상태를 남깁니다.</div>
+    </form>
+  </section>
+
+  <section id="appView" class="hidden">
+    <header>
+      <h1>KIS 관리자 콘솔</h1>
+      <div class="head-actions">
+        <a href="../index.html">KIS로 돌아가기</a>
+        <button id="logout" type="button">로그아웃</button>
+      </div>
+    </header>
+    <main>
+      <div class="notice">
+        이 콘솔은 로컬 관리자 검토용입니다. 승인 전 후보는 공개 탭에 표시되지 않습니다.
+        게시하려면 후보의 승인 명령을 PowerShell에서 실행한 뒤 <code>node build.js</code>를 실행하세요.
+      </div>
+      <div class="notice warn">
+        현재 로그인은 화면 접근을 가리는 로컬 게이트입니다. 인터넷 공개 관리자 기능에는 서버 로그인, 세션, 권한 확인 API가 필요합니다.
+      </div>
+      <nav class="tabs" id="tabs"></nav>
+      <section id="eventPanel">
+        <div class="toolbar">
+          <input id="q" type="search" placeholder="제목, 출처, 유형 검색">
+          <select id="source"><option value="">전체 출처</option></select>
+          <button id="reload" type="button">새로고침</button>
+          <span class="count" id="count">0건</span>
+        </div>
+        <section class="grid" id="list"></section>
+      </section>
+      <section id="genericPanel" class="hidden"></section>
+    </main>
+  </section>
+
   <script>
+    const AUTH_KEY = 'kisAdminAuthed';
+    const DEFAULT_PIN = 'kis-admin';
+    const tabs = [
+      {key:'event', label:'Event', desc:'AI 세미나, 컨퍼런스, 웨비나, 무료교육 자동수집 후보를 검토하고 승인합니다.', ready:true},
+      {key:'news', label:'News', desc:'수집 기사 후보 승인, 요약 수정, 태그 보정 업무를 이 탭으로 확장합니다.'},
+      {key:'www', label:'WWW', desc:'웹사이트/서비스 링크 등록, 설명 보정, 공개 게시 업무를 이 탭으로 확장합니다.'},
+      {key:'paper', label:'Paper', desc:'논문 후보 승인, 요약/태그 보정, 공개 카드 생성 업무를 이 탭으로 확장합니다.'},
+      {key:'youtube', label:'YouTube', desc:'영상 후보 승인, 요약/태그 보정, 스크립트 확인 업무를 이 탭으로 확장합니다.'},
+      {key:'report', label:'Report', desc:'보고서 후보 승인, 기관/발행일 보정, 공개 카드 생성 업무를 이 탭으로 확장합니다.'},
+      {key:'settings', label:'Settings', desc:'출처 목록, 키워드, 승인 정책, 백엔드 로그인 연동 설정을 관리할 예정입니다.'}
+    ];
+
+    const loginView = document.getElementById('loginView');
+    const appView = document.getElementById('appView');
+    const tabNav = document.getElementById('tabs');
+    const eventPanel = document.getElementById('eventPanel');
+    const genericPanel = document.getElementById('genericPanel');
     const list = document.getElementById('list');
     const q = document.getElementById('q');
     const source = document.getElementById('source');
     const count = document.getElementById('count');
     let items = [];
+    let activeTab = 'event';
 
     const esc = s => String(s || '').replace(/[&<>"']/g, ch => ({
       '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'
     }[ch]));
+
+    function showApp() {
+      loginView.classList.add('hidden');
+      appView.classList.remove('hidden');
+      renderTabs();
+      selectTab(activeTab);
+    }
+
+    function showLogin() {
+      appView.classList.add('hidden');
+      loginView.classList.remove('hidden');
+    }
+
+    document.getElementById('loginForm').addEventListener('submit', e => {
+      e.preventDefault();
+      const pin = document.getElementById('adminPin').value.trim();
+      if (pin !== DEFAULT_PIN) {
+        alert('PIN이 맞지 않습니다.');
+        return;
+      }
+      localStorage.setItem(AUTH_KEY, '1');
+      showApp();
+    });
+
+    document.getElementById('logout').addEventListener('click', () => {
+      localStorage.removeItem(AUTH_KEY);
+      showLogin();
+    });
+
+    function renderTabs() {
+      tabNav.innerHTML = tabs.map(t => `<button class="tab ${t.key === activeTab ? 'on' : ''}" type="button" data-tab="${t.key}">${esc(t.label)}</button>`).join('');
+      tabNav.querySelectorAll('.tab').forEach(btn => btn.addEventListener('click', () => selectTab(btn.dataset.tab)));
+    }
+
+    function selectTab(key) {
+      activeTab = key;
+      renderTabs();
+      if (key === 'event') {
+        eventPanel.classList.remove('hidden');
+        genericPanel.classList.add('hidden');
+        loadEvents();
+        return;
+      }
+      const tab = tabs.find(t => t.key === key);
+      eventPanel.classList.add('hidden');
+      genericPanel.classList.remove('hidden');
+      genericPanel.innerHTML = `<div class="panel">
+        <h2>${esc(tab.label)} 관리</h2>
+        <p>${esc(tab.desc)}</p>
+        <ul>
+          <li>공통 후보 목록 데이터 모델을 Event와 같은 방식으로 붙일 예정입니다.</li>
+          <li>검토, 승인, 제외, 태그 보정 UI는 Event 탭 컴포넌트를 재사용합니다.</li>
+          <li>승인 버튼 직접 실행과 진짜 로그인은 백엔드/API 단계에서 활성화합니다.</li>
+        </ul>
+      </div>`;
+    }
 
     function command(id, action) {
       return action === 'approve'
@@ -82,8 +200,9 @@
         prompt('명령을 복사하세요.', text);
       }
     }
+    window.copy = copy;
 
-    function render() {
+    function renderEvents() {
       const keyword = q.value.trim().toLowerCase();
       const src = source.value;
       const filtered = items.filter(it => {
@@ -124,14 +243,16 @@
       }).join('');
     }
 
-    async function load() {
+    async function loadEvents() {
       try {
         const res = await fetch('../data/events/pending-events.json?ts=' + Date.now());
         if (!res.ok) throw new Error(`pending-events.json ${res.status}`);
         items = await res.json();
         const sources = [...new Set(items.map(it => it.source).filter(Boolean))].sort();
+        const current = source.value;
         source.innerHTML = '<option value="">전체 출처</option>' + sources.map(s => `<option value="${esc(s)}">${esc(s)}</option>`).join('');
-        render();
+        if (sources.includes(current)) source.value = current;
+        renderEvents();
       } catch (e) {
         count.textContent = '0건';
         list.innerHTML = `<div class="error">pending 목록을 읽지 못했습니다.<br>
@@ -140,10 +261,12 @@
       }
     }
 
-    q.addEventListener('input', render);
-    source.addEventListener('change', render);
-    document.getElementById('reload').addEventListener('click', load);
-    load();
+    q.addEventListener('input', renderEvents);
+    source.addEventListener('change', renderEvents);
+    document.getElementById('reload').addEventListener('click', loadEvents);
+
+    if (localStorage.getItem(AUTH_KEY) === '1') showApp();
+    else showLogin();
   </script>
 </body>
 </html>
