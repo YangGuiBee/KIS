@@ -13,6 +13,19 @@
 node build.js      # cards/ → index.html 재생성
 ```
 
+## Event 자동수집/승인
+AI 세미나·컨퍼런스·웨비나·무료교육 후보는 공개 카드로 바로 만들지 않고, 로컬 관리자 검토 대기열에 먼저 저장한다.
+
+```
+node tools/sync-events.js                  # 출처 목록에서 Event 후보 수집 → data/events/pending-events.json
+node tools/list-pending-events.js          # 검토 대기 후보 확인
+node tools/approve-event.js <candidate-id> # 승인 → cards/event_*.md 생성
+node tools/reject-event.js <candidate-id>  # 제외 → rejected-events.json 기록
+node build.js                              # 승인된 Event 카드 공개 index.html 반영
+```
+
+`data/events/*.json` 파일은 관리자 검토용 로컬 데이터라 Git에 올리지 않는다. 공개 KIS에는 승인되어 `cards/event_*.md`로 생성된 항목만 노출된다.
+
 ## 사전 준비 (홈·사무실 공통)
 KIS 저장소와 **나란히(sibling)** 비공개 전문스크립트 저장소를 클론해둔다. 부모 폴더 이름은 PC마다 달라도 된다(홈은 `C:\AI`, 사무실은 `C:\ai-bok` 등) — 중요한 건 `KIS`와 `scripts`가 같은 부모 폴더 밑에 나란히 있어야 한다는 것뿐이다:
 ```

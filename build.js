@@ -100,7 +100,7 @@ const TYPE_TABS = [
 ];
 // "자료출처" 모달에 쓰는 설명 — 실제 tools/*.js·workflows 동작을 그대로 서술(지어내지 않음).
 const TYPE_RULES = [
-  { icon: '📅', label: 'Event', desc: '관리자 수동 등록' },
+  { icon: '📅', label: 'Event', desc: '① 자동수집 후보 — AI 행사/세미나/교육 출처를 로컬 대기열로 수집<br>② 관리자 승인 — 관리자가 후보를 검토해 승인한 건만 Event 카드로 생성·게시' },
   { icon: '📰', label: 'News', desc: '① 자동수집 — 매일 07시경 AI 전문매체 RSS 10곳(인공지능신문·바이라인네트워크·VentureBeat AI·MIT Technology Review·AI타임스·전자신문·ZDNet Korea·TechCrunch·The Verge·Ars Technica)을 확인해 신규 기사만 카드화하여 자동 수집 및 저장 : <b>[auto]</b> 표시<br>② 수동 등록 — 관리자 수동 등록 : [auto] 표시 생략' },
   { icon: '🌐', label: 'WWW', desc: '관리자 수동 등록' },
   { icon: '📄', label: 'Paper', desc: '매일 08시경 <a href="https://yangguibee.github.io/paper.html" target="_blank">https://yangguibee.github.io/paper.html</a>의 논문 수집결과를 자동 수집 및 저장' },

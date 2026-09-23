@@ -1,0 +1,63 @@
+[
+  {
+    "id": "spri-events",
+    "name": "SPRi 행사",
+    "priority": "A",
+    "url": "https://www.spri.kr/posts?code=conference&flg=1",
+    "mode": "links",
+    "type": "forum",
+    "tags": ["AI행사", "SPRi", "포럼"],
+    "urlIncludes": ["posts/view/"],
+    "titleExcludes": ["(결과)", "결과)"],
+    "includeKeywords": ["AI", "인공지능", "생성형", "LLM", "GPT", "AX", "SW", "소프트웨어", "데이터", "세미나", "컨퍼런스", "웨비나", "포럼", "교육", "특강", "사전등록", "참가신청"],
+    "excludeKeywords": ["채용", "입찰", "보도자료"]
+  },
+  {
+    "id": "ai-expo-korea",
+    "name": "AI EXPO KOREA",
+    "priority": "A",
+    "url": "https://expo.koraia.org/",
+    "mode": "singlePage",
+    "title": "AI EXPO KOREA",
+    "type": "conference",
+    "tags": ["AI행사", "AIEXPO", "컨퍼런스"],
+    "includeKeywords": ["AI", "인공지능", "EXPO", "컨퍼런스", "전시", "세미나", "사전등록", "참관"],
+    "excludeKeywords": ["sponsor", "부스", "광고"]
+  },
+  {
+    "id": "kict-week-ai-korea",
+    "name": "K-ICT WEEK / AI KOREA",
+    "priority": "A",
+    "url": "https://ictweek.kr/",
+    "mode": "singlePage",
+    "title": "K-ICT WEEK in BUSAN / AI KOREA",
+    "type": "conference",
+    "tags": ["AI행사", "KICTWEEK", "AIKOREA"],
+    "includeKeywords": ["AI", "인공지능", "ICT", "KOREA", "컨퍼런스", "세미나", "전시", "사전등록", "참관"],
+    "excludeKeywords": ["sponsor", "부스", "광고"]
+  },
+  {
+    "id": "kisa",
+    "name": "KISA",
+    "priority": "A",
+    "enabled": false,
+    "disabledReason": "KISA 메인 페이지는 메뉴 링크가 많이 섞여 전용 공지/행사 파서 확정 후 활성화",
+    "url": "https://www.kisa.or.kr/",
+    "type": "security",
+    "tags": ["AI행사", "KISA", "보안"],
+    "includeKeywords": ["AI", "인공지능", "보안", "정보보호", "세미나", "컨퍼런스", "교육", "웨비나", "사전등록"],
+    "excludeKeywords": ["입찰", "채용", "인사", "계약"]
+  },
+  {
+    "id": "tta-academy",
+    "name": "TTA Academy",
+    "priority": "A",
+    "enabled": false,
+    "disabledReason": "TTA 교육 페이지는 과정 목록 파서 확정 후 활성화",
+    "url": "https://edu.tta.or.kr/",
+    "type": "education",
+    "tags": ["AI행사", "TTA", "교육"],
+    "includeKeywords": ["AI", "인공지능", "품질", "표준", "테스트", "교육", "세미나", "과정", "수강", "신청"],
+    "excludeKeywords": ["공지", "채용", "입찰"]
+  }
+]
