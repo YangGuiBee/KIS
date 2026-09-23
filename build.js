@@ -6,8 +6,13 @@ const path = require('path');
 const CARDS = path.join(__dirname, 'cards');
 const SITE_TITLE = '놓치면 안되는 정말 중요한 AI 지식정보사이트(KIS)';
 const esc = s => String(s || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
-const enc = p => encodeURI('file:///' + String(p || '').replace(/\\/g, '/'));
 const isAbsLocalPath = p => /^[A-Za-z]:[\\/]/.test(String(p || ''));
+const enc = p => {
+  const s = String(p || '').replace(/\\/g, '/');
+  if (/^(https?:|file:)/i.test(s)) return encodeURI(s);
+  if (isAbsLocalPath(s)) return encodeURI('file:///' + s);
+  return encodeURI(s);
+};
 // source/images는 두 가지 형태를 지원한다:
 //  - 절대경로(C:\... , 레거시): file:// 링크로 변환 — 만든 그 PC에서만 열림
 //  - 상대경로(../scripts/..., 권장): index.html 기준 상대링크 — KIS와 나란히 클론된 어느 PC에서든 열림
