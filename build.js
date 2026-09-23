@@ -216,6 +216,7 @@ body.dark .et{background:#3b2f63;color:#c4b5fd;border-color:#4c3f7a}
 .cbody h4{margin:14px 0 6px;font-size:14px;color:#0e7490}.cbody ul{margin:6px 0;padding-left:20px}.cbody li{font-size:13.5px;line-height:1.7;margin:3px 0}
 .cbody p{font-size:13.5px;line-height:1.7}.ts{background:#f1f5f9;padding:0 5px;border-radius:4px;font-size:12px;color:#334155}
 .wl{background:#eef2ff;color:#4338ca;border-radius:4px;padding:0 5px;font-size:12px;text-decoration:none;cursor:pointer}.wl:hover{text-decoration:underline}
+.wl-static{background:#f3f4f6;color:var(--mut);cursor:default}.wl-static:hover{text-decoration:none}
 .muted{color:var(--mut)}.src{margin-top:12px;font-size:12px;word-break:break-all}.src a{color:var(--blue);font-weight:700;text-decoration:none}
 .gal{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px;margin:8px 0 4px}
 .gal img{width:100%;height:100px;object-fit:cover;border:1px solid var(--line);border-radius:6px;cursor:pointer;transition:.15s}.gal img:hover{transform:scale(1.03);box-shadow:0 2px 8px rgba(0,0,0,.15)}
@@ -255,6 +256,15 @@ _tgl.onclick=()=>{const d=!document.body.classList.contains('dark');localStorage
 const _srcBtn=document.getElementById('srcBtn'),_srcModal=document.getElementById('srcModal'),_srcClose=document.getElementById('srcClose');
 _srcBtn.onclick=()=>_srcModal.classList.add('open');
 _srcClose.onclick=()=>_srcModal.classList.remove('open');
+if(location.protocol!=='file:'){
+  document.querySelectorAll('a.wl[href^="file:"]').forEach(a=>{
+    const s=document.createElement('span');
+    s.className='wl wl-static';
+    s.textContent=a.textContent;
+    s.title='로컬 Obsidian 전용 참조';
+    a.replaceWith(s);
+  });
+}
 const _tagBtn=document.getElementById('tagBtn'),_chips=document.getElementById('chips');
 function _setTagsOpen(o){_chips.classList.toggle('open',o);_tagBtn.classList.toggle('on',o);_tagBtn.textContent=(o?'🏷 태그 접기 (':'🏷 태그 펼치기 (')+${allTags.length}+')';}
 _setTagsOpen(localStorage.getItem('kis-tagsopen')==='1');
