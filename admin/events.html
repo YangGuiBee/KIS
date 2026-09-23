@@ -217,6 +217,11 @@
       list.innerHTML = filtered.map(it => {
         const approve = command(it.id, 'approve');
         const reject = command(it.id, 'reject');
+        const summary = String(it.summary || '').trim();
+        const title = String(it.title || '').trim();
+        const summaryHtml = summary && summary !== title
+          ? `<p class="summary">${esc(summary)}</p>`
+          : '';
         return `<article class="card">
           <div class="top">
             <div>
@@ -231,7 +236,7 @@
             </div>
             <a href="${esc(it.url)}" target="_blank" rel="noopener">원문 보기</a>
           </div>
-          <p class="summary">${esc(it.summary || '(요약 없음)')}</p>
+          ${summaryHtml}
           <div class="cmd">
             <code>${esc(approve)}</code>
             <div class="actions">
@@ -270,4 +275,3 @@
   </script>
 </body>
 </html>
-

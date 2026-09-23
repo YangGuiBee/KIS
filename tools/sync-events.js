@@ -177,7 +177,7 @@ function toCandidate(source, anchor) {
     source_url: source.url,
     title: anchor.title,
     url: anchor.url,
-    summary: anchor.title,
+    summary: '',
     event_type: classifyEventType(source, text),
     event_date: guessDate(text),
     place: /온라인|웨비나/i.test(text) ? '온라인' : '미확인',

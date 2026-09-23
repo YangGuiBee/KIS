@@ -159,6 +159,9 @@ const cardHtml = cards.map((c, i) => {
   // '스크립트 전문' 링크는 유튜브·WWW·Report(book) 타입에서 생략 — 영상은 썸네일로, WWW는 원문 링크로, Report는 자료 링크로 접근하며 자막/원문 재노출은 불필요·저작권 이슈
   const noSrcLink = ['yt', 'www', 'book'].includes(type);
   const srcLink = (c.fm.source && !noSrcLink) ? `<a href="${srcHref(c.fm.source)}" target="_blank">📄 스크립트 전문</a>` : '';
+  const summary = String(c.fm.summary || '').trim();
+  const titleText = String(c.fm.title || '').trim();
+  const summaryHtml = summary && summary !== titleText ? `<div class="cs">${esc(summary)}</div>` : '';
   let gallery = '';
   if (c.fm.images && fs.existsSync(c.fm.images)) {
     const imgs = fs.readdirSync(c.fm.images).filter(f => /\.(png|jpe?g)$/i.test(f)).sort();
@@ -167,7 +170,7 @@ const cardHtml = cards.map((c, i) => {
   }
   return `<article class="card" data-type="${type}" data-tags="${esc((c.fm.tags || []).join('|'))}" data-text="${esc((c.fm.title + ' ' + c.fm.summary + ' ' + (c.fm.tags || []).join(' ')).toLowerCase())}">
     <div class="chd" onclick="this.parentNode.classList.toggle('open')">
-      <div><div class="ct">${esc(c.fm.title)}</div><div class="cs">${esc(c.fm.summary)}</div>${evtInfo}<div class="tags">${tags}</div></div>
+      <div><div class="ct">${esc(c.fm.title)}</div>${summaryHtml}${evtInfo}<div class="tags">${tags}</div></div>
       <div class="meta">${vid}<span class="muted">${esc(c.fm.date || '')}</span><span class="exp">▾</span></div>
     </div>
     <div class="cbody">${renderBody(c.body)}${gallery}<div class="src muted">${srcLink}</div></div>

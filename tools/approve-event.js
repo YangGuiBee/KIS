@@ -44,9 +44,21 @@ function tagsValue(tags) {
   return clean.join(', ');
 }
 
+function isSameText(a, b) {
+  return String(a || '').replace(/\s+/g, ' ').trim() === String(b || '').replace(/\s+/g, ' ').trim();
+}
+
+function cardSummary(item) {
+  const raw = String(item.summary || '').trim();
+  if (raw && !isSameText(raw, item.title)) return raw;
+  const type = item.event_type || '이벤트';
+  const source = item.source || '수집 출처';
+  return `${source}에서 수집한 ${type} 후보입니다. 세부 정보는 원문에서 확인하세요.`;
+}
+
 function toCard(item) {
   const today = new Date().toISOString().slice(0, 10);
-  const summary = item.summary || '행사 원문을 확인해 세부 정보를 검토해야 합니다.';
+  const summary = cardSummary(item);
   return `---
 title: "${yamlValue(item.title)}"
 event: ${item.url}
@@ -112,4 +124,3 @@ function main() {
 }
 
 main();
-
