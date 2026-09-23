@@ -260,7 +260,7 @@ if(location.protocol!=='file:'){
   document.querySelectorAll('a.wl[href^="file:"]').forEach(a=>{
     const s=document.createElement('span');
     s.className='wl wl-static';
-    s.textContent=a.textContent;
+    s.textContent='옵시디언:' + a.textContent;
     s.title='로컬 Obsidian 전용 참조';
     a.replaceWith(s);
   });
