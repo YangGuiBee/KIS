@@ -1,4 +1,4 @@
-// 카드(cards/*.md)에 쓰인 [[위키링크]]를 전수 조사해서, C:\AX\obsidian\Raw\9.프로젝트(KIS)\ 안에
+// 카드(cards/*.md)에 쓰인 [[위키링크]]를 전수 조사해서, C:\AX\obsidian\Raw\14.Office프로젝트(KIS)\ 안에
 // 아직 없는 노트가 있으면 스텁 파일을 자동 생성한다. 이미 있는 노트는 절대 덮어쓰지 않는다.
 // 실행: node tools/sync-wikilinks.js  (홈/가이아 PC 전용 — 사무실엔 이 vault가 없음)
 'use strict';
@@ -6,7 +6,7 @@ const fs = require('fs');
 const path = require('path');
 
 const CARDS_DIR = path.join(__dirname, '..', 'cards');
-const VAULT_DIR = 'C:/AX/obsidian/Raw/9.프로젝트(KIS)';
+const VAULT_DIR = 'C:/AX/obsidian/Raw/14.Office프로젝트(KIS)';
 const today = new Date().toISOString().slice(0, 10);
 
 if (!fs.existsSync(VAULT_DIR)) {

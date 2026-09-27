@@ -36,7 +36,7 @@ function parse(md) {
   });
   return { fm, body };
 }
-const VAULT_KIS_NOTES = 'C:/AX/obsidian/Raw/9.프로젝트(KIS)';
+const VAULT_KIS_NOTES = 'C:/AX/obsidian/Raw/14.Office프로젝트(KIS)';
 function renderBody(b) { // 가벼운 md→html
   const out = []; let inUl = false; let imgRun = [];
   const flushImg = () => { // 연속된 이미지 줄을 한 행(imgrow)으로 묶어 나란히 배치
