@@ -15,13 +15,21 @@ if (!url) {
   console.error('사용법: node tools/new-card.js <youtube-url>');
   process.exit(1);
 }
-const idMatch = url.match(/(?:v=|youtu\.be\/)([\w-]{11})/);
+const idMatch = url.match(/(?:v=|youtu\.be\/|\/shorts\/)([\w-]{11})/);
 if (!idMatch) { console.error('YouTube 영상 ID를 URL에서 못 찾았습니다.'); process.exit(1); }
 const videoId = idMatch[1];
 
 const cardsDirCheck = path.join(__dirname, '..', 'cards');
-const dupCard = fs.readdirSync(cardsDirCheck).find(f =>
-  fs.readFileSync(path.join(cardsDirCheck, f), 'utf8').includes(videoId));
+// sparse-checkout으로 cards/를 로컬에서 뺀 PC(홈)에서는 폴더가 없으므로 git HEAD에서 중복을 찾는다.
+let dupCard;
+if (fs.existsSync(cardsDirCheck)) {
+  dupCard = fs.readdirSync(cardsDirCheck).find(f =>
+    fs.readFileSync(path.join(cardsDirCheck, f), 'utf8').includes(videoId));
+} else {
+  const g = spawnSync('git', ['grep', '-l', videoId, 'HEAD', '--', 'cards'], { cwd: path.join(__dirname, '..'), encoding: 'utf8' });
+  dupCard = g.stdout.trim().split('\n')[0].replace(/^HEAD:cards\//, '') || undefined;
+  fs.mkdirSync(cardsDirCheck, { recursive: true });
+}
 if (dupCard) {
   console.error(`이미 이 영상의 카드가 있습니다: cards/${dupCard}`);
   process.exit(1);
@@ -37,7 +45,8 @@ const YTDLP_CANDIDATES = [
 function runYtDlp(args) {
   const env = Object.assign({}, process.env, { PYTHONIOENCODING: 'utf-8', PYTHONUTF8: '1' });
   for (const { bin, pre } of YTDLP_CANDIDATES) {
-    const r = spawnSync(bin, [...pre, ...args], { encoding: 'utf8', env });
+    // 최신 yt-dlp는 JS 런타임 없이 YouTube 추출 시 자막 요청이 429로 막히는 경우가 있어 node를 지정한다.
+    const r = spawnSync(bin, [...pre, '--js-runtimes', 'node', ...args], { encoding: 'utf8', env });
     if (!r.error) return r;
   }
   throw new Error('yt-dlp를 찾을 수 없습니다. `python -m pip install --user yt-dlp` 로 설치하세요.');
