@@ -128,11 +128,15 @@ if (fs.existsSync(cardPath)) {
   // 나란히 클론되어 있기만 하면 어느 PC에서 열어도 링크가 맞는다(build.js의 srcHref 참고).
   const kisRoot = path.join(__dirname, '..');
   const scriptRelForSource = path.relative(kisRoot, scriptPath).replace(/\\/g, '/');
+  // KIS 유튜브 카드 원칙: date는 등록일이 아니라 실제 영상 게시일(upload_date, YYYYMMDD → YYYY-MM-DD)
+  const videoDate = /^\d{8}$/.test(uploadDate || '')
+    ? `${uploadDate.slice(0, 4)}-${uploadDate.slice(4, 6)}-${uploadDate.slice(6, 8)}`
+    : today;
   const skeleton = `---
 title: ${title} — ${uploader}
 video: ${url}
 source: ${scriptRelForSource}
-date: ${today}
+date: ${videoDate}
 tags: [TODO]
 summary: TODO — 아래 전문 스크립트를 읽고 채울 것(원 영상 근거 없이 요약 금지)
 ---
@@ -151,4 +155,5 @@ summary: TODO — 아래 전문 스크립트를 읽고 채울 것(원 영상 근
 }
 
 console.log('\n다음 단계: 전문 스크립트를 읽고 카드의 TODO(핵심 키포인트/업무적용점/tags/summary)를 채운 뒤,');
+console.log('제목(title)은 낚시성 원제목 대신 내용을 직시한 제목으로 바꾸고(원제목은 참고란에 남김),');
 console.log('node build.js 로 재빌드하고, node tools/sync-wikilinks.js 로 새 [[위키링크]]가 있으면 vault 노트도 채우세요.');
