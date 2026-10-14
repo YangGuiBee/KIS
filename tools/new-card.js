@@ -1,18 +1,29 @@
-// YouTube URL 하나로 (1) 자동자막 다운로드 (2) 정제해서 전문 스크립트 txt를
-// 비공개 저장소(C:\AI\scripts\KIS\, github.com/YangGuiBee/scripts private repo)에 저장+push
+// YouTube URL 하나로 (1) 자동자막 다운로드 (2) 정제해서 OS 임시 폴더에 작업용 txt로 저장
 // (3) cards/ 에 프론트matter가 채워진 카드 스켈레톤 생성까지 자동화한다.
 // 핵심 키포인트/요약 "본문"은 절대 자동 생성하지 않는다 — 무-지어내기 원칙상
-// 반드시 스크립트를 실제로 읽은 사람(또는 이 스크립트를 실행한 클로드 세션)이 채워야 한다.
+// 반드시 자막을 실제로 읽은 사람(또는 이 스크립트를 실행한 클로드 세션)이 채워야 한다.
+// 저작권: 자막 전문은 어떤 저장소에도 보관하지 않는다(2026-10-14 결정). 임시 txt는 카드 작성용이며
+// 카드를 다 채운 뒤 `node tools/new-card.js --purge <videoId>`로 지운다. 카드에는 요약·키포인트만 남긴다.
 // 실행: node tools/new-card.js https://youtu.be/XXXXXXXXXXX
-// 사전조건: C:\AI\scripts (private repo, KIS와 sibling)가 클론되어 있어야 함
 'use strict';
 const fs = require('fs');
+const os = require('os');
 const path = require('path');
 const { spawnSync } = require('child_process');
 
+const tmpTextPath = id => path.join(os.tmpdir(), `kis_${id}_자막.txt`);
+
+if (process.argv[2] === '--purge') {
+  const id = process.argv[3];
+  if (!id) { console.error('사용법: node tools/new-card.js --purge <videoId>'); process.exit(1); }
+  const p = tmpTextPath(id);
+  if (fs.existsSync(p)) { fs.unlinkSync(p); console.log(`삭제: ${p}`); } else { console.log(`없음(이미 삭제됨): ${p}`); }
+  process.exit(0);
+}
+
 const url = process.argv[2];
 if (!url) {
-  console.error('사용법: node tools/new-card.js <youtube-url>');
+  console.error('사용법: node tools/new-card.js <youtube-url>   |   node tools/new-card.js --purge <videoId>');
   process.exit(1);
 }
 const idMatch = url.match(/(?:v=|youtu\.be\/|\/shorts\/)([\w-]{11})/);
@@ -59,7 +70,7 @@ const [title, uploader, uploadDate] = meta.stdout.trim().split('\t');
 console.log(`  제목: ${title}\n  채널: ${uploader}`);
 
 const today = new Date().toISOString().slice(0, 10);
-const tmpPrefix = path.join(__dirname, '..', `_tmp_${videoId}`);
+const tmpPrefix = path.join(os.tmpdir(), `kis_${videoId}`);
 
 console.log('[2/4] 한국어 자동자막 다운로드(yt-dlp)');
 const sub = runYtDlp(['--write-auto-sub', '--sub-lang', 'ko', '--skip-download', '--sub-format', 'vtt', '-o', tmpPrefix, url]);
@@ -90,32 +101,10 @@ function cleanVtt(vttText) {
 const cleaned = cleanVtt(fs.readFileSync(vttPath, 'utf8'));
 fs.unlinkSync(vttPath);
 
-// 전문 스크립트는 KIS 저장소가 아니라 별도 비공개 저장소(scripts, KIS 폴더 하위)에 보관한다.
-// KIS 저장소와 나란히(sibling) 클론되어 있어야 함: C:\AI\KIS, C:\AI\scripts
-const SCRIPTS_REPO = path.join(__dirname, '..', '..', 'scripts');
-const SCRIPTS_PROJECT_DIR = path.join(SCRIPTS_REPO, 'KIS');
-if (!fs.existsSync(SCRIPTS_REPO)) {
-  console.error(`전문 스크립트 저장소가 없습니다: ${SCRIPTS_REPO}`);
-  console.error('먼저 클론하세요: git clone https://github.com/YangGuiBee/scripts.git (C:\\AI\\scripts 위치)');
-  process.exit(1);
-}
-
-const safeTitle = title.replace(/[\\/:*?"<>|]/g, '').slice(0, 40);
-const scriptDir = path.join(SCRIPTS_PROJECT_DIR, today);
-fs.mkdirSync(scriptDir, { recursive: true });
-const scriptPath = path.join(scriptDir, `${safeTitle}_전문스크립트.txt`);
-fs.writeFileSync(scriptPath, cleaned + '\n', 'utf8');
-console.log(`  저장: ${scriptPath} (${cleaned.length}자)`);
-
-const gitAdd = spawnSync('git', ['add', path.relative(SCRIPTS_REPO, scriptPath)], { cwd: SCRIPTS_REPO, encoding: 'utf8' });
-const gitCommit = spawnSync('git', ['commit', '-m', `KIS 스크립트 추가: ${safeTitle}`], { cwd: SCRIPTS_REPO, encoding: 'utf8' });
-const gitPush = spawnSync('git', ['push', 'origin', 'main'], { cwd: SCRIPTS_REPO, encoding: 'utf8' });
-if (gitPush.status === 0) {
-  console.log('  scripts 저장소에 commit+push 완료(비공개 저장소)');
-} else {
-  console.log('  ⚠ scripts 저장소 commit/push 실패 — 나중에 C:\\AI\\scripts 에서 수동으로 git add/commit/push 하세요.');
-  console.log('  ' + (gitCommit.stderr || gitPush.stderr || '').trim());
-}
+// 자막 전문은 저장소에 보관하지 않는다 — OS 임시 폴더에 카드 작성용으로만 둔다(작성 후 --purge).
+const textPath = tmpTextPath(videoId);
+fs.writeFileSync(textPath, cleaned + '\n', 'utf8');
+console.log(`  임시 저장: ${textPath} (${cleaned.length}자) — 저장소에는 올리지 않음`);
 
 console.log('[4/4] 카드 스켈레톤 생성');
 const slugBase = title.replace(/[\\/:*?"<>|[\]()!]/g, '').replace(/\s+/g, '').slice(0, 20);
@@ -124,10 +113,6 @@ const cardPath = path.join(__dirname, '..', 'cards', `${slug}.md`);
 if (fs.existsSync(cardPath)) {
   console.log(`  이미 카드가 있습니다: ${cardPath} (건너뜀)`);
 } else {
-  // KIS 폴더(=이 저장소 루트) 기준 상대경로로 저장 — C:\AI든 C:\ai-bok든 KIS와 scripts가
-  // 나란히 클론되어 있기만 하면 어느 PC에서 열어도 링크가 맞는다(build.js의 srcHref 참고).
-  const kisRoot = path.join(__dirname, '..');
-  const scriptRelForSource = path.relative(kisRoot, scriptPath).replace(/\\/g, '/');
   // KIS 유튜브 카드 원칙: date는 등록일이 아니라 실제 영상 게시일(upload_date, YYYYMMDD → YYYY-MM-DD)
   const videoDate = /^\d{8}$/.test(uploadDate || '')
     ? `${uploadDate.slice(0, 4)}-${uploadDate.slice(4, 6)}-${uploadDate.slice(6, 8)}`
@@ -135,25 +120,25 @@ if (fs.existsSync(cardPath)) {
   const skeleton = `---
 title: ${title} — ${uploader}
 video: ${url}
-source: ${scriptRelForSource}
 date: ${videoDate}
 tags: [TODO]
-summary: TODO — 아래 전문 스크립트를 읽고 채울 것(원 영상 근거 없이 요약 금지)
+summary: TODO — 임시 자막 txt를 읽고 채울 것(원 영상 근거 없이 요약 금지, 원문 장문 인용 금지)
 ---
 ## 핵심 키포인트
-- TODO(스크립트 읽고 채우기)
+- TODO(자막 읽고 채우기)
 
 ## 우리 업무 적용점
 - TODO
 
 ## 참고
 - 채널: ${uploader} / 업로드일: ${uploadDate || '확인 필요'}
-- 본 카드는 YouTube 자동생성 한국어 자막을 근거로 정리 예정
+- 본 카드는 YouTube 자동생성 한국어 자막을 근거로 정리(자막 전문은 저작권상 보관하지 않음)
 `;
   fs.writeFileSync(cardPath, skeleton, 'utf8');
   console.log(`  생성: ${cardPath}`);
 }
 
-console.log('\n다음 단계: 전문 스크립트를 읽고 카드의 TODO(핵심 키포인트/업무적용점/tags/summary)를 채운 뒤,');
+console.log(`\n다음 단계: 임시 자막(${textPath})을 읽고 카드의 TODO(핵심 키포인트/업무적용점/tags/summary)를 채운 뒤,`);
 console.log('제목(title)은 낚시성 원제목 대신 내용을 직시한 제목으로 바꾸고(원제목은 참고란에 남김),');
 console.log('node build.js 로 재빌드하고, node tools/sync-wikilinks.js 로 새 [[위키링크]]가 있으면 vault 노트도 채우세요.');
+console.log(`마지막으로 임시 자막 삭제: node tools/new-card.js --purge ${videoId}`);

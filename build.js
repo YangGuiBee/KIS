@@ -13,16 +13,6 @@ const enc = p => {
   if (isAbsLocalPath(s)) return encodeURI('file:///' + s);
   return encodeURI(s);
 };
-// source/images는 두 가지 형태를 지원한다:
-//  - 절대경로(C:\... , 레거시): file:// 링크로 변환 — 만든 그 PC에서만 열림
-//  - 상대경로(../scripts/..., 권장): index.html 기준 상대링크 — KIS와 나란히 클론된 어느 PC에서든 열림
-//    (예: C:\AI\KIS + C:\AI\scripts 든, C:\ai-bok\KIS + C:\ai-bok\scripts 든 동일하게 동작)
-function srcHref(p) {
-  if (!p) return '';
-  if (/^https?:/i.test(p)) return p;
-  if (isAbsLocalPath(p)) return enc(p);
-  return String(p).replace(/\\/g, '/');
-}
 
 function parse(md) {
   const m = md.match(/^---\r?\n([\s\S]*?)\r?\n---\r?\n([\s\S]*)$/);
@@ -155,10 +145,8 @@ const cardHtml = cards.map((c, i) => {
   if (c.fm.edeadline) _ei.push(`<b>마감</b> ${esc(c.fm.edeadline)}`);
   const evtInfo = (c.fm.etype || _ei.length)
     ? `<div class="evt">${c.fm.etype ? `<span class="et">${esc(c.fm.etype)}</span>` : ''}<span class="ei">${_ei.join(' · ')}</span></div>` : '';
-  // 유튜브 카드(video 필드)는 하단 '스크립트 전문' 링크 생략 — 상단 썸네일로 이미 영상 재생되고, 자막 전문 노출은 저작권 이슈
-  // '스크립트 전문' 링크는 유튜브·WWW·Report(book) 타입에서 생략 — 영상은 썸네일로, WWW는 원문 링크로, Report는 자료 링크로 접근하며 자막/원문 재노출은 불필요·저작권 이슈
-  const noSrcLink = ['yt', 'www', 'book'].includes(type);
-  const srcLink = (c.fm.source && !noSrcLink) ? `<a href="${srcHref(c.fm.source)}" target="_blank">📄 스크립트 전문</a>` : '';
+  // '스크립트 전문' 링크는 모든 카드에서 표시하지 않는다(2026-10-14 결정) — 자막·원문 전문은 저작권상
+  // 보관·재노출하지 않음. source 필드는 정렬용(sourceMtime)으로만 남는다.
   const summary = String(c.fm.summary || '').trim();
   const titleText = String(c.fm.title || '').trim();
   const summaryHtml = summary && summary !== titleText ? `<div class="cs">${esc(summary)}</div>` : '';
@@ -173,7 +161,7 @@ const cardHtml = cards.map((c, i) => {
       <div><div class="ct">${esc(c.fm.title)}</div>${summaryHtml}${evtInfo}<div class="tags">${tags}</div></div>
       <div class="meta">${vid}<span class="muted">${esc(c.fm.date || '')}</span><span class="exp">▾</span></div>
     </div>
-    <div class="cbody">${renderBody(c.body)}${gallery}<div class="src muted">${srcLink}</div></div>
+    <div class="cbody">${renderBody(c.body)}${gallery}</div>
   </article>`;
 }).join('\n');
 
