@@ -1,0 +1,17 @@
+---
+title: [auto] Recording device hidden in toilet paper found in top-secret OpenAI meeting room
+news: https://arstechnica.com/tech-policy/2026/10/fbi-arrests-openai-engineer-suspected-of-planting-bug-in-conference-room/
+date: 2026-10-14
+tags: [RSS수집, Ars Technica]
+summary: OpenAI engineer faces 5 years and $250K fine as FBI lobs foreign spy charges.
+---
+## 메타
+- 출처: Ars Technica
+- 발행일: 2026-10-14
+- 수집일: 2026-10-15
+
+## 요약
+OpenAI engineer faces 5 years and $250K fine as FBI lobs foreign spy charges.
+
+---
+*이 카드는 Ars Technica RSS를 매일 자동 동기화한 것입니다.*
